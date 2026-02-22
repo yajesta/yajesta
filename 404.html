@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>404 — oscar kalid</title>
+    <meta name="description" content="Page not found.">
+    <link rel="icon" href="images/oscar-kalid.png">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap">
+    <style>
+      .drift {
+        animation: drift 6s ease-in-out infinite;
+      }
+      @keyframes drift {
+        0%, 100% { transform: translateY(0) rotate(-3deg); }
+        50% { transform: translateY(-8px) rotate(3deg); }
+      }
+      .fade-in {
+        animation: fadeIn 0.6s ease-out both;
+      }
+      .fade-in-delayed {
+        animation: fadeIn 0.6s ease-out 0.15s both;
+      }
+      .fade-in-delayed-2 {
+        animation: fadeIn 0.6s ease-out 0.3s both;
+      }
+      @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(12px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="flex flex-col bg-white pt-10 p-8 w-full items-center mt-0 sm:mt-20">
+      <div class="flex flex-row items-center justify-center w-full max-w-2xl gap-20">
+        <div class="flex flex-col items-start gap-6">
+          <div class="text-gray-800 text-2xl font-light flex flex-col items-start gap-4">
+            <span class="mb-10 flex flex-col sm:flex-row items-start sm:items-center gap-3 fade-in">
+              <span class="drift" style="display: inline-block; font-size: 2.5rem; line-height: 1;">404</span>
+            </span>
+            <span class="fade-in-delayed" style="display: block;">
+              This page doesn't exist — maybe it did once, or maybe you mistyped something.
+            </span>
+            <span class="fade-in-delayed-2" style="display: block; margin-top: 1rem;">
+              Either way, let's get you back.
+              <a href="/" class="text-blue-600 hover:text-purple-600 transition-colors">Go home.</a>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
