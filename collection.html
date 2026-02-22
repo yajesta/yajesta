@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>dog collection - oscarkalid.com</title>
+    <meta name="description" content="A collection of dog photos by Oscar Kalid.">
+    <link rel="icon" href="images/oscar-kalid.png">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap">
+    <style>
+      .photo-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.5rem;
+        width: 100%;
+      }
+      @media (max-width: 768px) {
+        .photo-grid {
+          grid-template-columns: repeat(2, 1fr);
+          gap: 1rem;
+        }
+      }
+      @media (max-width: 480px) {
+        .photo-grid {
+          grid-template-columns: 1fr;
+          gap: 1rem;
+        }
+      }
+      .photo-card {
+        position: relative;
+        overflow: hidden;
+        border-radius: 0.75rem;
+        cursor: pointer;
+        aspect-ratio: 1 / 1;
+        transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                    box-shadow 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      }
+      .photo-card:nth-child(3n+1) { transform: rotate(-2deg); }
+      .photo-card:nth-child(3n+2) { transform: rotate(1.5deg); }
+      .photo-card:nth-child(3n+3) { transform: rotate(-1deg); }
+      .photo-card:hover {
+        transform: rotate(0deg) scale(1.03);
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15);
+      }
+      .photo-card img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: filter 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      }
+      .photo-card:hover img {
+        filter: brightness(0.8);
+      }
+      .photo-overlay {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 1.25rem;
+        background: linear-gradient(to top, rgba(0, 0, 0, 0.55), transparent);
+        transform: translateY(100%);
+        transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      }
+      .photo-card:hover .photo-overlay {
+        transform: translateY(0);
+      }
+      .photo-title {
+        color: #fff;
+        font-size: 0.95rem;
+        font-weight: 400;
+        line-height: 1.4;
+      }
+      .photo-date {
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 0.75rem;
+        font-weight: 300;
+        margin-top: 0.2rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="flex flex-col bg-white pt-10 p-8 w-full items-center mt-0 sm:mt-20">
+      <div class="flex flex-col items-start w-full" style="max-width: 900px;">
+        <a href="/" class="text-gray-600 hover:text-gray-800 transition-colors text-lg mb-4">&larr; Back to home</a>
+        <div class="flex justify-start mb-8 w-full">
+          <img src="images/oscar-kalid.png" alt="Oscar Kalid" class="w-16 h-16 rounded-full">
+        </div>
+        <div class="text-gray-800 text-2xl font-light mb-10">
+          <p>My collection of dog photos. Mostly Uno.</p>
+        </div>
+        <div class="photo-grid">
+          <div class="photo-card">
+            <img src="images/dogs/very-happy-dog.png" alt="Very happy dog">
+            <div class="photo-overlay">
+              <div class="photo-title">Very happy dog</div>
+              <div class="photo-date">Aug 2024</div>
+            </div>
+          </div>
+          <div class="photo-card">
+            <img src="images/dogs/closeup-of-uno.png" alt="Close up of Uno">
+            <div class="photo-overlay">
+              <div class="photo-title">Close up of Uno</div>
+              <div class="photo-date">Jul 2024</div>
+            </div>
+          </div>
+          <div class="photo-card">
+            <img src="images/dogs/jack-with-tongue.png" alt="Jack with tongue out">
+            <div class="photo-overlay">
+              <div class="photo-title">Jack with tongue out</div>
+              <div class="photo-date">May 2024</div>
+            </div>
+          </div>
+          <div class="photo-card">
+            <img src="images/dogs/just-wokeup.png" alt="Just woke up">
+            <div class="photo-overlay">
+              <div class="photo-title">Just woke up</div>
+              <div class="photo-date">Apr 2024</div>
+            </div>
+          </div>
+          <div class="photo-card">
+            <img src="images/dogs/feet-in-the-air.png" alt="Sleeping with feet in the air">
+            <div class="photo-overlay">
+              <div class="photo-title">Sleeping with feet in the air</div>
+              <div class="photo-date">Feb 2024</div>
+            </div>
+          </div>
+          <div class="photo-card">
+            <img src="images/dogs/super-happy-dog.png" alt="Super happy dog">
+            <div class="photo-overlay">
+              <div class="photo-title">Super happy dog</div>
+              <div class="photo-date">Jan 2024</div>
+            </div>
+          </div>
+          <div class="photo-card">
+            <img src="images/dogs/unoalana.png" alt="Uno and Alana">
+            <div class="photo-overlay">
+              <div class="photo-title">Uno and Alana</div>
+              <div class="photo-date">Dec 2023</div>
+            </div>
+          </div>
+          <div class="photo-card">
+            <img src="images/dogs/uno-being-helpful.png" alt="Uno being super helpful">
+            <div class="photo-overlay">
+              <div class="photo-title">Uno being super helpful</div>
+              <div class="photo-date">Nov 2023</div>
+            </div>
+          </div>
+          <div class="photo-card">
+            <img src="images/dogs/uno-in-a-bag.png" alt="Uno in a bag">
+            <div class="photo-overlay">
+              <div class="photo-title">Uno in a bag</div>
+              <div class="photo-date">Oct 2023</div>
+            </div>
+          </div>
+          <div class="photo-card">
+            <img src="images/dogs/uno-on-halloween.png" alt="Uno on Halloween">
+            <div class="photo-overlay">
+              <div class="photo-title">Uno on Halloween</div>
+              <div class="photo-date">Oct 2023</div>
+            </div>
+          </div>
+          <div class="photo-card">
+            <img src="images/dogs/super-sleepy-dog.png" alt="Uno super sleepy">
+            <div class="photo-overlay">
+              <div class="photo-title">Uno super sleepy</div>
+              <div class="photo-date">Sep 2023</div>
+            </div>
+          </div>
+          <div class="photo-card">
+            <img src="images/dogs/uno-turning-one.png" alt="Uno turning one">
+            <div class="photo-overlay">
+              <div class="photo-title">Uno turning one</div>
+              <div class="photo-date">Aug 2023</div>
+            </div>
+          </div>
+          <div class="photo-card">
+            <img src="images/dogs/uno-young.png" alt="Young Uno">
+            <div class="photo-overlay">
+              <div class="photo-title">Young Uno</div>
+              <div class="photo-date">Jun 2023</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <section aria-label="Notifications alt+T" tabindex="-1" aria-live="polite" aria-relevant="additions text" aria-atomic="false"></section>
+    </div>
+    <script>
+      ((STORAGE_KEY, restoreKey) => {
+        if (!window.history.state || !window.history.state.key) {
+          let key = Math.random().toString(32).slice(2);
+          window.history.replaceState({
+            key
+          }, "");
+        }
+        try {
+          let positions = JSON.parse(sessionStorage.getItem(STORAGE_KEY) || "{}");
+          let storedY = positions[restoreKey || window.history.state.key];
+          if (typeof storedY === "number") {
+            window.scrollTo(0, storedY);
+          }
+        } catch (error) {
+          console.error(error);
+          sessionStorage.removeItem(STORAGE_KEY);
+        }
+      })("positions", null)
+    </script>
+    <script>
+      window.__remixContext = {
+        "basename": "/",
+        "future": {
+          "v3_fetcherPersist": true,
+          "v3_relativeSplatPath": true,
+          "v3_throwAbortReason": true,
+          "unstable_singleFetch": false,
+          "unstable_lazyRouteDiscovery": false,
+          "unstable_optimizeDeps": false
+        },
+        "isSpaMode": false,
+        "state": {
+          "loaderData": {
+            "root": null,
+            "routes/collection": null
+          },
+          "actionData": null,
+          "errors": null
+        }
+      };
+    </script>
+    <script type="module" async="">
+      import "/assets/manifest.js";
+      import * as route0 from "/assets/root.js";
+      import * as route1 from "/assets/index.js";
+      window.__remixRouteModules = {
+        "root": route0,
+        "routes/collection": route1
+      };
+      import("/assets/entry.client-DaXVMO7V.js");
+    </script>
+  </body>
+</html>
