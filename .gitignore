@@ -2,3 +2,4 @@
 .env
 info
 spotify-api/.vercel
+.vscode
