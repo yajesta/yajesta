@@ -1090,3 +1090,39 @@ body {
     text-align: left;
   }
 }
+
+.spotify-eq {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 14px;
+  padding: 0 2px;
+}
+
+.spotify-bar {
+  display: inline-block;
+  width: 3px;
+  background-color: #1db954;
+  border-radius: 1px;
+  animation: equalizer 1.2s ease-in-out infinite;
+}
+
+.spotify-bar:nth-child(1) {
+  height: 6px;
+  animation-delay: 0s;
+}
+
+.spotify-bar:nth-child(2) {
+  height: 10px;
+  animation-delay: 0.2s;
+}
+
+.spotify-bar:nth-child(3) {
+  height: 4px;
+  animation-delay: 0.4s;
+}
+
+@keyframes equalizer {
+  0%, 100% { transform: scaleY(0.3); }
+  50% { transform: scaleY(1); }
+}
