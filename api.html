@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>api - oscarkalid.com</title>
+    <meta name="description" content="Public API endpoints for oscarkalid.com">
+    <link rel="icon" href="images/oscar-kalid.png">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap">
+    <style>
+      .font-geist-mono {
+        font-family: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      }
+      .api-route {
+        border: 1px solid #e5e7eb;
+        border-radius: 1rem;
+        overflow: hidden;
+        transition: border-color 0.2s, box-shadow 0.2s;
+      }
+      .api-route:hover {
+        border-color: #d1d5db;
+        box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.04);
+      }
+      .api-route summary {
+        cursor: pointer;
+        list-style: none;
+        padding: 1.1rem 1.35rem;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
+      .api-route summary::-webkit-details-marker {
+        display: none;
+      }
+      .api-route[open] summary {
+        border-bottom: 1px solid #f3f4f6;
+      }
+      .api-route .details-body {
+        padding: 1.5rem 1.35rem;
+      }
+      .method-badge {
+        font-family: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+        font-size: 0.65rem;
+        font-weight: 600;
+        letter-spacing: 0.06em;
+        padding: 0.25rem 0.55rem;
+        border-radius: 0.5rem;
+        text-transform: uppercase;
+        flex-shrink: 0;
+      }
+      .method-get {
+        background-color: #ecfdf5;
+        color: #047857;
+        border: 1px solid #a7f3d0;
+      }
+      .chevron {
+        margin-left: auto;
+        transition: transform 0.2s;
+        flex-shrink: 0;
+        color: #c4c9d1;
+      }
+      .api-route[open] .chevron {
+        transform: rotate(90deg);
+      }
+      .response-block {
+        background-color: #f9fafb;
+        border: 1px solid #e5e7eb;
+        border-radius: 0.75rem;
+        padding: 1rem 1.15rem;
+        overflow-x: auto;
+        font-size: 0.8rem;
+        line-height: 1.7;
+      }
+      .response-block code {
+        font-family: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+        display: block;
+        white-space: pre;
+        color: #374151;
+      }
+      .section-label {
+        font-size: 0.75rem;
+        font-weight: 500;
+        color: #9ca3af;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+      .status-row {
+        display: flex;
+        align-items: baseline;
+        gap: 0.5rem;
+        font-size: 0.875rem;
+      }
+      .status-code {
+        font-family: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+        font-weight: 500;
+        font-size: 0.8rem;
+        padding: 0.15rem 0.45rem;
+        border-radius: 0.375rem;
+      }
+      .status-200 {
+        color: #047857;
+        background-color: #ecfdf5;
+      }
+      .status-500 {
+        color: #dc2626;
+        background-color: #fef2f2;
+      }
+      .inline-code {
+        font-family: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+        font-size: 0.78rem;
+        background: #f3f4f6;
+        padding: 0.12rem 0.4rem;
+        border-radius: 0.375rem;
+        display: inline;
+        color: #374151;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="flex flex-col bg-white pt-10 p-8 w-full items-center mt-0 sm:mt-20">
+      <div class="flex flex-row items-center justify-center w-full max-w-[700px] gap-20">
+        <div class="flex flex-col items-start gap-6 w-full">
+          <a href="/" class="text-gray-600 hover:text-gray-800 transition-colors text-lg mb-4">← Back to home</a>
+          <div class="text-gray-800 text-2xl font-light flex flex-col items-start gap-4 w-full">
+            <div class="mb-6">
+              <p>Public API endpoints available on this site.</p>
+            </div>
+            <div class="w-full flex flex-col gap-4">
+              <h2 class="text-lg" style="color: #6b7280; font-weight: 400;">Endpoints</h2>
+              <details class="api-route">
+                <summary>
+                  <span class="method-badge method-get">GET</span>
+                  <span class="font-geist-mono" style="font-size: 0.95rem;">/api/now-playing</span>
+                  <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="9 18 15 12 9 6"></polyline>
+                  </svg>
+                </summary>
+                <div class="details-body flex flex-col gap-6">
+                  <div>
+                    <p style="font-size: 0.9rem; color: #6b7280; font-weight: 300; line-height: 1.7;">Returns the track currently playing on Spotify, or the most recently played track if nothing is active. Absoultely no reason for you to use this, why would you embed what I listen to lol?.</p>
+                  </div>
+                  <div class="flex flex-col gap-2">
+                    <span class="section-label">URL</span>
+                    <div class="response-block">
+                      <code>https://oscarkalid.com/api/now-playing</code>
+                    </div>
+                  </div>
+                  <div class="flex flex-col gap-2">
+                    <span class="section-label">Response</span>
+                    <div class="response-block">
+                      <code>{
+  "isPlaying": true,
+  "title": "Song Name",
+  "artist": "Artist Name",
+  "albumArt": "https://i.scdn.co/image/...",
+  "songUrl": "https://open.spotify.com/track/..."
+}</code>
+                    </div>
+                  </div>
+                  <div class="flex flex-col gap-3">
+                    <span class="section-label">Status Codes</span>
+                    <div class="flex flex-col gap-3" style="padding-left: 0.15rem;">
+                      <div class="status-row">
+                        <span class="status-code status-200">200</span>
+                        <span style="color: #6b7280;">Success. Returns track data, or <code class="inline-code">{ isPlaying: false }</code> if no data is available.</span>
+                      </div>
+                      <div class="status-row">
+                        <span class="status-code status-500">500</span>
+                        <span style="color: #6b7280;">Internal error fetching from Spotify.</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </details>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
