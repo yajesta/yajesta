@@ -79,6 +79,24 @@
             </span>
      
           -->
+            <span id="spotify-widget" class="inline-flex relative group items-start flex-col sm:flex-row sm:items-center gap-2 mt-8" style="display: none;">
+              <span>
+                <span id="spotify-status-text">Last played</span>
+                <!-- -->
+                <a id="spotify-link" href="#" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:text-purple-600 transition-colors"><span id="spotify-track"></span></a>
+                <!-- -->
+                by <span id="spotify-artist"></span>
+                <!-- -->
+                <a id="spotify-art-link" href="#" target="_blank" rel="noopener noreferrer" class="relative inline-flex items-center align-middle ml-2 group/spotifyart">
+                  <img id="spotify-album-art" src="" alt="Album art" class="w-10 h-10 inline-block align-middle rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-all duration-200 -rotate-3 hover:rotate-0" style="display: none;">
+                </a>
+                <span id="spotify-eq" class="spotify-eq" style="display: none;">
+                  <span class="spotify-bar"></span>
+                  <span class="spotify-bar"></span>
+                  <span class="spotify-bar"></span>
+                </span>
+              </span>
+            </span>
             <span class="inline-flex relative group items-start flex-col sm:flex-row sm:items-center gap-2 mt-8">
               <span>Interested about my tech stack?
                 <a href="/tools" class="text-blue-600 hover:text-purple-600 transition-colors">Click here.</a>
@@ -150,6 +168,41 @@
         "routes/_index": route1
       };
       import("/assets/entry.client-DaXVMO7V.js");
+    </script>
+    <script>
+      (async function loadSpotifyWidget() {
+        const API_URL = 'https://spotify-now-playing-api-oscar.vercel.app/api/now-playing';
+        try {
+          const res = await fetch(API_URL);
+          if (!res.ok) return;
+          const data = await res.json();
+          if (!data || !data.title) return;
+
+          document.getElementById('spotify-status-text').textContent =
+            data.isPlaying ? 'Currently listening to' : 'Last played';
+          document.getElementById('spotify-track').textContent = data.title;
+          document.getElementById('spotify-artist').textContent = data.artist;
+
+          const artEl = document.getElementById('spotify-album-art');
+          if (data.albumArt) {
+            artEl.src = data.albumArt;
+            artEl.style.display = 'inline-block';
+          }
+
+          if (data.songUrl) {
+            document.getElementById('spotify-link').href = data.songUrl;
+            document.getElementById('spotify-art-link').href = data.songUrl;
+          }
+
+          if (data.isPlaying) {
+            document.getElementById('spotify-eq').style.display = 'inline-flex';
+          }
+
+          document.getElementById('spotify-widget').style.display = 'inline-flex';
+        } catch (e) {
+          // Widget stays hidden if API is unreachable
+        }
+      })();
     </script>
   </body>
 </html>
