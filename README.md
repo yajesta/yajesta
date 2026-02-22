@@ -1,47 +1,30 @@
-# Oscar Kalid — Portfolio
+### Hey, I'm Oscar 👋
 
-Personal portfolio website for [Oscar Kalid](https://oscarkalid.com), showcasing apps, projects, and a curated tools page.
+I build software for MSPs and run a dev studio called **[Yajesta](https://yajesta.com)**.
 
-## Overview
+---
 
-A static portfolio site built with HTML, CSS, and JavaScript. It highlights Oscar's work building apps for MSPs (including [Riceva](https://riceva.com/) , his software studio [Yajesta](https://yajesta.com).
+#### What I'm working on
 
-## Project Structure
+- **[Riceva](https://riceva.com)** — RPA automation for MSPs
+- **[Rasco](https://rascoagent.com)** — Autonomous agent for MSPs
+- **[Yajesta](https://yajesta.com)** — My software studio (dev & design for hire)
 
-```
-├── index.html          # Main portfolio page
-├── tools.html          # "Tools I Use" — productivity apps, dev tools, discount codes
-├── style.css           # Tailwind-based styles
-├── CNAME               # Custom domain (oscarkalid.com) for GitHub Pages
-├── assets/             # JS bundles (Remix build output)
-├── images/             # Avatars, app logos, icons
-└── README.md
-```
+---
 
-## Pages
+#### GitHub Stats
 
-- **Home** (`index.html`) — Intro, app links (Riceva, Luna), LinkedIn, Yajesta, Aloa, and contact CTAs
-- **Tools** (`tools.html`) — Curated list of tools and services with discount codes where applicable
+<p>
+  <img height="170" src="https://github-readme-stats.vercel.app/api?username=yajesta&show_icons=true&theme=default&hide_border=true&count_private=true" alt="GitHub stats" />
+  <img height="170" src="https://github-readme-stats.vercel.app/api/top-langs/?username=yajesta&layout=compact&theme=default&hide_border=true" alt="Top languages" />
+</p>
 
-## Tech Stack
+<img src="https://github-readme-streak-stats.herokuapp.com?user=yajesta&theme=default&hide_border=true" alt="GitHub streak" />
 
-- Plain HTML
-- Tailwind CSS (via `style.css`)
-- Inter font (Google Fonts)
-- Remix/React assets for enhanced interactivity (scroll restoration, etc.)
+---
 
-## Deployment
+#### Connect
 
-Configured for GitHub Pages with custom domain `oscarkalid.com` via the `CNAME` file.
-
-## Local Development
-
-Open `index.html` in a browser or serve the directory with any static file server:
-
-```bash
-npx serve .
-# or
-python -m http.server 8000
-```
-
-Credits to https://chrisraroque.com/ for website. Oscarkalid.com is a fork of the original.
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-oscarkalid-blue?style=flat&logo=linkedin)](https://linkedin.com/in/oscarkalid)
+[![Website](https://img.shields.io/badge/Website-oscarkalid.com-black?style=flat&logo=google-chrome&logoColor=white)](https://oscarkalid.com)
+[![Email](https://img.shields.io/badge/Email-oscar@riceva.com-red?style=flat&logo=gmail&logoColor=white)](mailto:oscar@riceva.com)
