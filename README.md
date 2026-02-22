@@ -14,11 +14,6 @@ I build software for MSPs and run a dev studio called **[Yajesta](https://yajest
 
 #### GitHub Stats
 
-<p>
-  <img height="170" src="https://github-readme-stats.vercel.app/api?username=yajesta&show_icons=true&theme=default&hide_border=true&count_private=true" alt="GitHub stats" />
-  <img height="170" src="https://github-readme-stats.vercel.app/api/top-langs/?username=yajesta&layout=compact&theme=default&hide_border=true" alt="Top languages" />
-</p>
-
 <img src="https://github-readme-streak-stats.herokuapp.com?user=yajesta&theme=default&hide_border=true" alt="GitHub streak" />
 
 ---
