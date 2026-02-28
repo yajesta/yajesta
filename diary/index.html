@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>diary - oscarkalid.com</title>
+    <meta name="description" content="Daily diary by Oscar Kalid.">
+    <link rel="icon" href="../images/oscar-kalid.png">
+    <link rel="stylesheet" href="../style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+      .prose h1 { font-size: 1.5rem; font-weight: 300; margin-bottom: 1.5rem; color: #1f2937; }
+      .prose h2 { font-size: 1.25rem; font-weight: 400; margin-top: 2rem; margin-bottom: 0.75rem; color: #1f2937; }
+      .prose h3 { font-size: 1.1rem; font-weight: 500; margin-top: 1.5rem; margin-bottom: 0.5rem; color: #374151; }
+      .prose p { margin-bottom: 1rem; color: #374151; line-height: 1.7; }
+      .prose ul, .prose ol { margin-bottom: 1rem; padding-left: 1.5rem; color: #374151; }
+      .prose li { margin-bottom: 0.25rem; line-height: 1.7; }
+      .prose a { color: #2563eb; text-decoration: underline; }
+      .prose a:hover { color: #7c3aed; }
+      .prose strong { font-weight: 600; }
+      .prose em { font-style: italic; }
+      .prose hr { border: none; border-top: 1px solid #e5e7eb; margin: 2rem 0; }
+      .prose blockquote { border-left: 3px solid #e5e7eb; padding-left: 1rem; color: #6b7280; font-style: italic; margin: 1rem 0; }
+      .prose code { font-family: monospace; background: #f3f4f6; padding: 0.1rem 0.3rem; border-radius: 4px; font-size: 0.9em; }
+      .prose pre { background: #f3f4f6; padding: 1rem; border-radius: 8px; overflow-x: auto; margin-bottom: 1rem; }
+      .prose pre code { background: none; padding: 0; }
+    </style>
+  </head>
+  <body>
+    <div class="flex flex-col bg-white pt-10 p-8 w-full items-center mt-0 sm:mt-20">
+      <div class="flex flex-col items-start w-full max-w-2xl gap-6">
+        <a href="/" class="text-gray-600 hover:text-gray-800 transition-colors text-lg">← back</a>
+        <div id="app" class="w-full"></div>
+      </div>
+    </div>
+
+    <script>
+      const REPO = 'yajesta/saveweb2zip-com-chrisraroque-com';
+      const BRANCH = 'main';
+      const dateParam = new URLSearchParams(window.location.search).get('date');
+
+      // Parse DD-MM-YYYY into a Date object
+      function parseDate(str) {
+        const [d, m, y] = str.split('-');
+        return new Date(`${y}-${m}-${d}`);
+      }
+
+      // Parse frontmatter block: --- key: value ---
+      function parseFrontmatter(text) {
+        const match = text.match(/^---\n([\s\S]*?)\n---\n?([\s\S]*)$/);
+        if (!match) return { meta: {}, body: text };
+        const meta = {};
+        for (const line of match[1].split('\n')) {
+          const [key, ...rest] = line.split(':');
+          if (key) meta[key.trim()] = rest.join(':').trim();
+        }
+        return { meta, body: match[2].trim() };
+      }
+
+      async function renderEntry(dateStr) {
+        const app = document.getElementById('app');
+        try {
+          const res = await fetch(`entries/${dateStr}.md`);
+          if (!res.ok) throw new Error();
+          const raw = await res.text();
+          const { meta, body } = parseFrontmatter(raw);
+
+          const title = meta.title || dateStr;
+          const dateLabel = meta.date || dateStr;
+          document.title = `${title} - diary - oscarkalid.com`;
+
+          app.innerHTML = `
+            <div class="flex flex-col gap-6 w-full">
+              <div class="flex flex-col gap-1">
+                <a href="/diary/" class="text-gray-500 hover:text-gray-700 transition-colors text-sm">← all entries</a>
+                <p class="text-gray-400 text-sm mt-2">${dateLabel}</p>
+                <h1 class="text-2xl font-light text-gray-800">${title}</h1>
+              </div>
+              <div class="prose text-xl font-light w-full">${marked.parse(body)}</div>
+            </div>
+          `;
+        } catch {
+          app.innerHTML = `<p class="text-gray-500">Entry not found.</p>`;
+        }
+      }
+
+      async function renderIndex() {
+        const app = document.getElementById('app');
+        app.innerHTML = `<p class="text-gray-400 text-sm">Loading...</p>`;
+
+        try {
+          const res = await fetch(
+            `https://api.github.com/repos/${REPO}/contents/diary/entries?ref=${BRANCH}`
+          );
+          if (!res.ok) throw new Error();
+          const files = await res.json();
+
+          const entries = files
+            .filter(f => f.name.endsWith('.md'))
+            .map(f => f.name.replace('.md', ''))
+            .sort((a, b) => parseDate(b) - parseDate(a));
+
+          const items = entries.map(dateStr => {
+            const d = parseDate(dateStr);
+            const label = d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+            return `
+              <a href="/diary/?date=${dateStr}" class="flex flex-col gap-0.5 group">
+                <span class="text-gray-800 text-xl font-light group-hover:text-gray-400 transition-colors">${label}</span>
+              </a>
+            `;
+          }).join('');
+
+          app.innerHTML = `
+            <div class="flex flex-col gap-1 mb-10">
+              <h1 class="text-2xl font-light text-gray-800">diary</h1>
+              <p class="text-gray-400 text-sm">daily entries</p>
+            </div>
+            <div class="flex flex-col gap-6 w-full">
+              ${items || '<p class="text-gray-400 text-sm">No entries yet.</p>'}
+            </div>
+          `;
+        } catch {
+          app.innerHTML = `<p class="text-gray-500">Could not load entries.</p>`;
+        }
+      }
+
+      if (dateParam) {
+        renderEntry(dateParam);
+      } else {
+        renderIndex();
+      }
+    </script>
+  </body>
+</html>
