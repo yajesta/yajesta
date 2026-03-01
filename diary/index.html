@@ -63,7 +63,7 @@
       async function renderEntry(dateStr) {
         const app = document.getElementById('app');
         try {
-          const res = await fetch(`entries/${dateStr}.md`);
+          const res = await fetch(`entries/${dateStr}.md`, { cache: 'no-cache' });
           if (!res.ok) throw new Error();
           const raw = await res.text();
           const { meta, body } = parseFrontmatter(raw);
