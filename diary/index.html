@@ -23,7 +23,9 @@
       .prose strong { font-weight: 600; }
       .prose em { font-style: italic; }
       .prose hr { border: none; border-top: 1px solid #e5e7eb; margin: 2rem 0; }
-      .prose blockquote { border-left: 3px solid #e5e7eb; padding-left: 1rem; color: #6b7280; font-style: italic; margin: 1rem 0; }
+      .prose blockquote { position: relative; background: #f9fafb; border: none; border-radius: 10px; padding: 1.5rem 1.5rem 1.25rem 1.75rem; margin: 1.5rem 0; color: #1f2937; font-style: normal; }
+      .prose blockquote::before { content: '\201C'; position: absolute; top: 0.25rem; left: 0.75rem; font-size: 3rem; color: #e5e7eb; line-height: 1; font-family: Georgia, serif; }
+      .prose .quote-attr { font-size: 0.85rem; color: #9ca3af; margin-top: 0.5rem; margin-bottom: 0; }
       .prose code { font-family: monospace; background: #f3f4f6; padding: 0.1rem 0.3rem; border-radius: 4px; font-size: 0.9em; }
       .prose pre { background: #f3f4f6; padding: 1rem; border-radius: 8px; overflow-x: auto; margin-bottom: 1rem; }
       .prose pre code { background: none; padding: 0; }
@@ -43,6 +45,31 @@
       const REPO = 'yajesta/yajesta';
       const BRANCH = 'main';
       const dateParam = new URLSearchParams(window.location.search).get('date');
+
+      // Enhance blockquotes: decorative quote mark + optional attribution (— Author)
+      function styleQuotes(html) {
+        return html.replace(/<blockquote>([\s\S]*?)<\/blockquote>/g, (_, inner) => {
+          let body = inner;
+          let attr = '';
+
+          // Case 1: attribution after <br> within same <p>: "text<br>\n— Author</p>"
+          body = body.replace(/(<br\s*\/?>\n?)(—|&mdash;)\s*(.+?)(<\/p>)/, (_, _br, _dash, name, close) => {
+            attr = name.trim();
+            return close;
+          });
+
+          // Case 2: attribution in its own <p>: "<p>— Author</p>"
+          if (!attr) {
+            body = body.replace(/<p>(—|&mdash;)\s*(.+?)<\/p>\s*$/, (_, _dash, name) => {
+              attr = name.trim();
+              return '';
+            });
+          }
+
+          const attrHtml = attr ? `<p class="quote-attr">— ${attr}</p>` : '';
+          return `<blockquote>${body}${attrHtml}</blockquote>`;
+        });
+      }
 
       // Convert YouTube links produced by marked into responsive embeds
       function embedYouTube(html) {
@@ -88,7 +115,7 @@
                 <h1 class="text-2xl font-light text-gray-800">${title}</h1>
                 <p class="text-gray-400 text-sm">${dateLabel}</p>
               </div>
-              <div class="prose text-xl font-light w-full">${embedYouTube(marked.parse(body))}</div>
+              <div class="prose text-xl font-light w-full">${styleQuotes(embedYouTube(marked.parse(body)))}</div>
             </div>
           `;
         } catch {
