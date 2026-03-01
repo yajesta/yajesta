@@ -23,9 +23,9 @@
       .prose strong { font-weight: 600; }
       .prose em { font-style: italic; }
       .prose hr { border: none; border-top: 1px solid #e5e7eb; margin: 2rem 0; }
-      .prose blockquote { position: relative; background: #f9fafb; border: none; border-radius: 10px; padding: 1.5rem 1.5rem 1.25rem 1.75rem; margin: 1.5rem 0; color: #1f2937; font-style: normal; }
-      .prose blockquote::before { content: '\201C'; position: absolute; top: 0.25rem; left: 0.75rem; font-size: 3rem; color: #e5e7eb; line-height: 1; font-family: Georgia, serif; }
-      .prose .quote-attr { font-size: 0.85rem; color: #9ca3af; margin-top: 0.5rem; margin-bottom: 0; }
+      .prose blockquote { position: relative; background: #f9fafb; border: none; border-radius: 10px; padding: 3rem 1.5rem 1.5rem 2rem; margin: 1.5rem 0; color: #1f2937; font-style: normal; }
+      .prose blockquote::before { content: '\201C'; position: absolute; top: 0.25rem; left: 0.75rem; font-size: 5rem; color: #e5e7eb; line-height: 1; font-family: Georgia, serif; }
+      .prose .quote-attr { font-size: 0.75rem; color: #9ca3af; margin-top: 0.75rem; margin-bottom: 0; text-align: right; }
       .prose code { font-family: monospace; background: #f3f4f6; padding: 0.1rem 0.3rem; border-radius: 4px; font-size: 0.9em; }
       .prose pre { background: #f3f4f6; padding: 1rem; border-radius: 8px; overflow-x: auto; margin-bottom: 1rem; }
       .prose pre code { background: none; padding: 0; }
@@ -52,8 +52,8 @@
           let body = inner;
           let attr = '';
 
-          // Case 1: attribution after <br> within same <p>: "text<br>\n— Author</p>"
-          body = body.replace(/(<br\s*\/?>\n?)(—|&mdash;)\s*(.+?)(<\/p>)/, (_, _br, _dash, name, close) => {
+          // Case 1: attribution after <br> or plain newline within same <p>
+          body = body.replace(/(?:<br\s*\/?>)?\n(—|&mdash;)\s*(.+?)(<\/p>)/, (_, _dash, name, close) => {
             attr = name.trim();
             return close;
           });
