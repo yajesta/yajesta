@@ -97,20 +97,27 @@
           if (!res.ok) throw new Error();
           const files = await res.json();
 
-          const entries = files
-            .filter(f => f.name.endsWith('.md'))
-            .map(f => f.name.replace('.md', ''))
-            .sort((a, b) => parseDate(b) - parseDate(a));
+          const mdFiles = files.filter(f => f.name.endsWith('.md'));
 
-          const items = entries.map(dateStr => {
-            const d = parseDate(dateStr);
-            const label = d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
-            return `
-              <a href="/diary/?date=${dateStr}" class="flex flex-col gap-0.5 group">
-                <span class="text-gray-800 text-xl font-light group-hover:text-gray-400 transition-colors">${label}</span>
-              </a>
-            `;
-          }).join('');
+          const entries = await Promise.all(mdFiles.map(async f => {
+            const dateStr = f.name.replace('.md', '');
+            try {
+              const r = await fetch(`entries/${f.name}`);
+              const raw = await r.text();
+              const { meta } = parseFrontmatter(raw);
+              return { dateStr, title: meta.title || dateStr, dateLabel: meta.date || dateStr };
+            } catch {
+              return { dateStr, title: dateStr, dateLabel: dateStr };
+            }
+          }));
+
+          entries.sort((a, b) => parseDate(b.dateStr) - parseDate(a.dateStr));
+
+          const items = entries.map(({ dateStr, title, dateLabel }) => `
+            <a href="/diary/?date=${dateStr}" class="flex flex-col gap-0.5 group">
+              <span class="text-gray-800 text-xl font-light group-hover:text-gray-400 transition-colors">${title} - ${dateLabel}</span>
+            </a>
+          `).join('');
 
           app.innerHTML = `
             <div class="flex flex-col gap-1 mb-10">
