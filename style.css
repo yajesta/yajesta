@@ -109,6 +109,14 @@ h1 {
   font-weight: 500;
 }
 
+.intro {
+  margin: 0.55rem 0 0;
+  font-family: var(--font);
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: rgba(28, 36, 48, 0.66);
+}
+
 .email {
   display: inline-flex;
   align-items: center;
@@ -132,13 +140,12 @@ h1 {
 }
 
 h2 {
-  margin: 0 0 0.9rem;
-  font-family: var(--font);
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--muted);
+  margin: 0 0 1.05rem;
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(1.9rem, 4vw, 2.5rem);
+  line-height: 1.1;
+  color: var(--ink);
 }
 
 .list {
@@ -181,10 +188,8 @@ a.card:hover {
 .meta {
   margin: 0 0 0.35rem;
   color: var(--muted);
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  font-size: 0.92rem;
+  font-weight: 500;
 }
 
 h3 {
@@ -206,7 +211,8 @@ h3 {
   border-radius: 999px;
   background: rgba(28, 36, 48, 0.1);
   color: var(--ink);
-  letter-spacing: 0.08em;
+  font-size: 0.82rem;
+  font-weight: 500;
 }
 
 .go {
