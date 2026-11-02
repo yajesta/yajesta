@@ -9,13 +9,20 @@
     [24, [13, 19, 36], [28, 38, 65], [89, 89, 103]]
   ];
   var lift = [0.57, 0.61, 0.69];
-  var place = { latitude: null, longitude: null, timezone: "UTC", known: false };
+  var place = { latitude: 52.24, longitude: 0, timezone: "UTC", known: true };
   var timer = 0;
+  var snapToken = 0;
 
   try {
     place.timezone = Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC";
   } catch (error) {
     place.timezone = "UTC";
+  }
+
+  try {
+    place.longitude = clamp(-new Date().getTimezoneOffset() / 4, -180, 180);
+  } catch (error) {
+    place.longitude = 0;
   }
 
   function clamp(value, min, max) {
@@ -117,7 +124,7 @@
     var ink = [244, 246, 251];
     var next = color;
     var guard = 0;
-    while (contrastRatio(ink, next) < 4.6 && guard < 8) {
+    while (contrastRatio(ink, next) < 5.1 && guard < 12) {
       next = [
         Math.round(next[0] * 0.94),
         Math.round(next[1] * 0.94),
@@ -192,13 +199,29 @@
     var colors = skyColors(decimal, sky.day);
     var orb = orbPosition(decimal, sky);
     var root = document.documentElement;
+    var nextMode = sky.day ? "day" : "night";
+    var snap = root.dataset.sky !== nextMode;
+    if (snap) {
+      snapToken += 1;
+      root.classList.add("is-sky-instant");
+      void root.offsetWidth;
+    }
     root.style.setProperty("--stop-0", colors.top);
     root.style.setProperty("--stop-1", colors.mid);
     root.style.setProperty("--stop-2", colors.bottom);
     root.style.setProperty("--sky-top", colors.top);
     root.style.setProperty("--orb-x", orb.x);
     root.style.setProperty("--orb-y", orb.y);
-    root.dataset.sky = sky.day ? "day" : "night";
+    root.dataset.sky = nextMode;
+    if (snap) {
+      var token = snapToken;
+      void root.offsetWidth;
+      window.requestAnimationFrame(function () {
+        window.requestAnimationFrame(function () {
+          if (token === snapToken) root.classList.remove("is-sky-instant");
+        });
+      });
+    }
     var theme = document.querySelector('meta[name="theme-color"]');
     if (theme) theme.setAttribute("content", colors.top);
   }

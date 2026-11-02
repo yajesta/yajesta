@@ -69,17 +69,27 @@
   }
 
   function copyText(token, onSuccess, onFail) {
+    var settled = false;
     function finish(ok) {
+      if (settled) return;
+      settled = true;
       if (ok) onSuccess();
       else onFail();
     }
     if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(token).then(function () {
-        finish(true);
-      }, function () {
-        finish(fallbackCopy(token));
-      });
-      return;
+      var pending = navigator.clipboard.writeText(token);
+      if (pending && pending.then) {
+        pending.then(function () {
+          finish(true);
+        }, function () {
+          finish(fallbackCopy(token));
+        });
+        window.setTimeout(function () {
+          if (settled) return;
+          finish(fallbackCopy(token));
+        }, 350);
+        return;
+      }
     }
     finish(fallbackCopy(token));
   }
@@ -231,16 +241,27 @@
     var mail = document.querySelector("a.email");
     if (mail) {
       mail.addEventListener("click", function () {
-        var sawLeave = false;
-        function mark() { sawLeave = true; }
-        window.addEventListener("blur", mark);
-        document.addEventListener("visibilitychange", mark);
-        window.setTimeout(function () {
-          window.removeEventListener("blur", mark);
-          document.removeEventListener("visibilitychange", mark);
-          if (sawLeave || document.hidden || !document.hasFocus()) return;
+        var started = Date.now();
+        var sawHidden = false;
+        var poll = 0;
+        function stop() {
+          window.clearInterval(poll);
+        }
+        poll = window.setInterval(function () {
+          var elapsed = Date.now() - started;
+          if (document.hidden) {
+            sawHidden = true;
+            if (elapsed > 12000) stop();
+            return;
+          }
+          if (sawHidden) {
+            stop();
+            return;
+          }
+          if (elapsed < 900) return;
+          stop();
           revealAddress("No mail app opened.");
-        }, 900);
+        }, 150);
       });
     }
   });
