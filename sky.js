@@ -223,7 +223,7 @@
       });
     }
     var theme = document.querySelector('meta[name="theme-color"]');
-    if (theme) theme.setAttribute("content", colors.top);
+    if (theme) theme.setAttribute("content", colors.bottom);
   }
 
   function applyWeather(code, cover) {

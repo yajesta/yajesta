@@ -90,8 +90,15 @@ html[data-sky="night"] {
 }
 
 html {
-  background: var(--sky-top, #a1b3c8);
+  background-color: var(--stop-2, #dae0e8);
+  background-image: var(--sky);
+  background-repeat: no-repeat;
+  background-size: 100% 100vh;
+  background-size: 100% 100lvh;
+  min-height: 100vh;
+  min-height: 100lvh;
   scrollbar-width: none;
+  overscroll-behavior: none;
 }
 
 html::-webkit-scrollbar,
@@ -102,18 +109,21 @@ body::-webkit-scrollbar {
 html,
 body {
   margin: 0;
-  min-height: 100%;
+  min-height: 100vh;
+  min-height: 100lvh;
 }
 
 body {
   position: relative;
-  min-height: 100vh;
   font-family: var(--font);
   font-size: 1rem;
   line-height: 1.5;
   color: var(--ink);
-  background-color: var(--sky-top, #a1b3c8);
+  background-color: var(--stop-2, #dae0e8);
   background-image: var(--sky);
+  background-repeat: no-repeat;
+  background-size: 100% 100vh;
+  background-size: 100% 100lvh;
   -webkit-font-smoothing: antialiased;
   transition: background-color 0.7s var(--ease);
 }
@@ -133,6 +143,14 @@ body {
 .grain {
   inset: 0;
   overflow: hidden;
+}
+
+.atmosphere {
+  position: fixed;
+  z-index: 0;
+  width: 100%;
+  height: 100vh;
+  height: 100lvh;
 }
 
 .sky-wash,
@@ -236,18 +254,7 @@ html[data-sky="night"][data-weather="storm"] .sky-stars {
   background: radial-gradient(circle, rgba(255, 250, 236, 0.96) 0%, rgba(255, 232, 186, 0.55) 18%, rgba(255, 214, 150, 0.16) 42%, rgba(255, 214, 150, 0) 70%);
 }
 
-.sky-moon {
-  width: 5.4rem;
-  height: 5.4rem;
-  background: radial-gradient(circle at 35% 35%, rgba(255, 252, 245, 0.98) 0%, rgba(230, 235, 244, 0.9) 26%, rgba(214, 220, 232, 0.28) 52%, rgba(214, 220, 232, 0) 72%);
-  box-shadow: 0 0 42px rgba(226, 232, 245, 0.28);
-}
-
 html[data-sky="day"] .sky-sun {
-  opacity: var(--orb-opacity);
-}
-
-html[data-sky="night"] .sky-moon {
   opacity: var(--orb-opacity);
 }
 
