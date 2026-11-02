@@ -8,7 +8,7 @@
     <meta name="robots" content="index, follow">
     <meta name="theme-color" content="#a1b3c8">
     <meta name="referrer" content="strict-origin-when-cross-origin">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-I5N8+HaWNLT6aTBE4cB5y9F84vvspaAN+NSV69QLbP0='; style-src 'self'; font-src 'self'; img-src 'self'; connect-src 'self'; base-uri 'self'; form-action 'none'; object-src 'none'">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-I5N8+HaWNLT6aTBE4cB5y9F84vvspaAN+NSV69QLbP0='; style-src 'self'; font-src 'self'; img-src 'self'; connect-src 'self' https://get.geojs.io https://api.open-meteo.com; base-uri 'self'; form-action 'none'; object-src 'none'">
     <link rel="canonical" href="https://oscarkalid.com/">
     <meta property="og:title" content="Oscar Kalid">
     <meta property="og:description" content="Oscar Kalid designs and builds websites for local businesses in Northamptonshire.">
@@ -32,47 +32,101 @@
     <link rel="stylesheet" href="/style.css">
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Oscar Kalid","url":"https://oscarkalid.com/","email":"me@oscarkalid.com","jobTitle":"Web designer and developer"}</script>
     <script src="/site.js"></script>
+    <script src="/sky.js"></script>
   </head>
   <body>
-    <div class="atmosphere" aria-hidden="true"><div class="clouds"></div></div>
+    <div class="atmosphere" aria-hidden="true">
+      <div class="sky-wash"></div>
+      <div class="sky-stars"></div>
+      <div class="sky-orb sky-sun"></div>
+      <div class="sky-orb sky-moon"></div>
+      <div class="clouds clouds-back"></div>
+      <div class="clouds"></div>
+      <div class="sky-fog"></div>
+      <div class="sky-precip"></div>
+    </div>
     <div class="grain" aria-hidden="true"></div>
     <a class="skip" href="#content">Skip to content</a>
     <main class="page" id="content">
       <header class="hero">
-        <h1>Oscar</h1>
-        <p class="handle">@oscarkalid</p>
-        <p class="intro">I design and build websites and interfaces.</p>
-        <a class="email" data-contact>Email me</a>
+        <h1 data-rise>Oscar Kalid</h1>
+        <p class="handle" data-rise>
+          <button type="button" class="copy" aria-label="Copy @oscarkalid">
+            <span class="copy-label">@oscarkalid</span>
+            <span class="copy-aside">
+              <span class="copy-aside-clip">
+                <span class="copy-aside-inner">
+                  <span class="copy-icons" aria-hidden="true">
+                    <svg class="icon-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2"></rect><path d="M15 9V6.5A1.5 1.5 0 0 0 13.5 5h-8A1.5 1.5 0 0 0 4 6.5v8A1.5 1.5 0 0 0 5.5 16H8"></path></svg>
+                    <svg class="icon-check" viewBox="0 0 24 24"><path d="M5 12.5 9.2 16.7 19 7"></path></svg>
+                  </span>
+                  <span class="copy-status" aria-hidden="true"></span>
+                </span>
+              </span>
+            </span>
+          </button>
+          <span class="copy-announcement sr-only" role="status" aria-atomic="true"></span>
+        </p>
+        <p class="intro" data-rise>I design and build websites and interfaces.</p>
+        <div class="contact" data-rise>
+          <a class="email" data-contact>Email me</a>
+          <button type="button" class="copy-address" aria-label="Copy email address">
+            <span class="copy-icons" aria-hidden="true">
+              <svg class="icon-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2"></rect><path d="M15 9V6.5A1.5 1.5 0 0 0 13.5 5h-8A1.5 1.5 0 0 0 4 6.5v8A1.5 1.5 0 0 0 5.5 16H8"></path></svg>
+              <svg class="icon-check" viewBox="0 0 24 24"><path d="M5 12.5 9.2 16.7 19 7"></path></svg>
+            </span>
+            <span class="copy-aside">
+              <span class="copy-aside-clip">
+                <span class="copy-aside-inner">
+                  <span class="copy-status" aria-hidden="true"></span>
+                </span>
+              </span>
+            </span>
+          </button>
+          <span class="mail-announcement sr-only" role="status" aria-atomic="true"></span>
+        </div>
+        <p class="mail-note">
+          <span class="mail-note-clip">
+            <span class="mail-note-inner">
+              <span class="mail-message"></span>
+              <span class="mail-address"></span>
+            </span>
+          </span>
+        </p>
         <noscript><p class="fallback">Write to me at oscarkalid dot com.</p></noscript>
       </header>
       <section class="work" aria-labelledby="made-heading">
-        <h2 id="made-heading">Things I've made</h2>
+        <h2 id="made-heading" data-rise>Things I've made</h2>
         <div class="list">
-          <a class="card" href="https://northantseventsolutions.co.uk" target="_blank" rel="noopener noreferrer">
-            <img src="/images/northants-event-solutions.webp" width="1280" height="720" alt="Homepage of the Northants Event Solutions website, with a festival crowd and the headline for event production and equipment hire." loading="lazy" decoding="async">
+          <a class="card" data-rise href="https://northantseventsolutions.co.uk" target="_blank" rel="noopener noreferrer">
+            <img src="/images/northants-event-solutions.webp" width="1280" height="720" alt="Homepage of the Northants Event Solutions website, with a festival crowd and the headline for event production and equipment hire." fetchpriority="high" decoding="async">
             <div class="card-body">
               <h3>Northants Event Solutions</h3>
               <p>A website for a local events business, built and launched for a client, covering hire, installations, and event support.</p>
               <span class="go"><svg class="globe" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.6 2.8 3.9 6.1 3.9 9s-1.3 6.2-3.9 9c-2.6-2.8-3.9-6.1-3.9-9s1.3-6.2 3.9-9z"/></svg>northantseventsolutions.co.uk<span class="sr-only"> (opens in a new tab)</span></span>
             </div>
           </a>
-          <article class="card">
+          <article class="card is-static" data-rise>
             <div class="card-body">
               <h3>Nene Valley Bathrooms and Kitchens</h3>
               <p>A multi-page site for a bathroom, kitchen and renovation company, with service pages, finance information, and an enquiry form.</p>
             </div>
           </article>
-          <a class="card extra" href="https://ui.oscarkalid.com" target="_blank" rel="noopener noreferrer">
-            <div class="card-body">
-              <h3>UI kit</h3>
-              <p>@oscarkalid/ui is a set of React components and the design tokens they are built on. Install the package, or copy a component in and change it.</p>
-              <span class="go"><svg class="globe" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.6 2.8 3.9 6.1 3.9 9s-1.3 6.2-3.9 9c-2.6-2.8-3.9-6.1-3.9-9s1.3-6.2 3.9-9z"/></svg>ui.oscarkalid.com<span class="sr-only"> (opens in a new tab)</span></span>
-            </div>
-          </a>
         </div>
-        <p class="more-row"><button type="button" class="more" hidden>Show more</button></p>
+        <div class="extra-wrap" id="more-work">
+          <div class="extra-clip">
+            <a class="card" href="https://ui.oscarkalid.com" target="_blank" rel="noopener noreferrer">
+              <div class="card-body">
+                <h3>UI kit</h3>
+                <p>@oscarkalid/ui is a set of React components and the design tokens they are built on. Install the package, or copy a component in and change it.</p>
+                <span class="go"><svg class="globe" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.6 2.8 3.9 6.1 3.9 9s-1.3 6.2-3.9 9c-2.6-2.8-3.9-6.1-3.9-9s1.3-6.2 3.9-9z"/></svg>ui.oscarkalid.com<span class="sr-only"> (opens in a new tab)</span></span>
+              </div>
+            </a>
+          </div>
+        </div>
+        <p class="more-row" data-rise><button type="button" class="more" hidden aria-expanded="false" aria-controls="more-work">Show more</button></p>
       </section>
-      <section class="about" aria-labelledby="about-heading">
+      <section class="about" data-rise aria-labelledby="about-heading">
         <h2 id="about-heading">About me</h2>
         <p>I design and build websites for local businesses, from first idea to launch. I'm based in Northamptonshire and open to new work, so if you've got a project in mind, <a data-contact>get in touch</a>.</p>
       </section>
