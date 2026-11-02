@@ -17,23 +17,75 @@
 :root {
   color-scheme: light;
   --ink: #1c2430;
-  --muted: rgba(28, 36, 48, 0.72);
+  --muted: rgba(28, 36, 48, 0.96);
+  --soft: rgba(28, 36, 48, 0.96);
   --card: rgba(255, 255, 255, 0.4);
   --line: rgba(255, 255, 255, 0.62);
   --shadow: 0 22px 50px rgba(36, 54, 78, 0.1);
   --font: Manrope, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
   --serif: "Instrument Serif", Georgia, "Times New Roman", serif;
-  --sky: radial-gradient(ellipse 34% 22% at 20% 78%, rgba(178, 132, 148, 0.2), transparent 100%),
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --move: 0.55s;
+  --stop-0: rgb(161, 179, 200);
+  --stop-1: rgb(190, 203, 225);
+  --stop-2: rgb(218, 224, 232);
+  --sky-glow: radial-gradient(ellipse 34% 22% at 20% 78%, rgba(178, 132, 148, 0.2), transparent 100%),
     radial-gradient(ellipse 24% 27% at 55% 85%, rgba(157, 124, 128, 0.18), transparent 100%),
-    radial-gradient(ellipse 25% 24% at 77% 79%, rgba(114, 138, 190, 0.2), transparent 100%),
-    linear-gradient(180deg, rgb(161, 179, 200) 7%, rgb(190, 203, 225) 54%, rgb(218, 224, 232) 100%);
+    radial-gradient(ellipse 25% 24% at 77% 79%, rgba(114, 138, 190, 0.2), transparent 100%);
+  --sky: var(--sky-glow), linear-gradient(180deg, var(--stop-0) 7%, var(--stop-1) 54%, var(--stop-2) 100%);
   --page: 44rem;
+  --cloud-opacity: 0.55;
+  --cloud-back: 0.34;
+  --orb-opacity: 0.92;
+}
+
+@property --stop-0 {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: rgb(161, 179, 200);
+}
+
+@property --stop-1 {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: rgb(190, 203, 225);
+}
+
+@property --stop-2 {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: rgb(218, 224, 232);
+}
+
+html.is-sky-live {
+  transition: --stop-0 0.7s var(--ease), --stop-1 0.7s var(--ease), --stop-2 0.7s var(--ease), --sky-top 0.7s var(--ease);
+}
+
+html[data-sky="night"] {
+  color-scheme: dark;
+  --sky-glow: radial-gradient(ellipse 55% 45% at 50% 40%, rgba(7, 13, 28, 0.16), transparent 100%);
+  --ink: #f4f6fb;
+  --muted: #f4f6fb;
+  --soft: #f4f6fb;
+  --card: rgba(10, 16, 30, 0.46);
+  --line: rgba(255, 255, 255, 0.16);
+  --shadow: 0 22px 50px rgba(0, 0, 0, 0.28);
 }
 
 *,
 *::before,
 *::after {
   box-sizing: border-box;
+}
+
+html {
+  background: var(--sky-top, #a1b3c8);
+  scrollbar-width: none;
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none;
 }
 
 html,
@@ -49,36 +101,247 @@ body {
   font-size: 1rem;
   line-height: 1.5;
   color: var(--ink);
-  background: var(--sky);
+  background-color: var(--sky-top, #a1b3c8);
+  background-image: var(--sky);
   -webkit-font-smoothing: antialiased;
+  transition: color 0.7s var(--ease), background-color 0.7s var(--ease);
+}
+
+.atmosphere,
+.grain,
+.sky-wash,
+.sky-stars,
+.sky-orb,
+.sky-fog,
+.sky-precip {
+  position: absolute;
+  pointer-events: none;
 }
 
 .atmosphere,
 .grain {
-  position: absolute;
   inset: 0;
-  pointer-events: none;
   overflow: hidden;
+}
+
+.sky-wash,
+.sky-stars,
+.sky-fog,
+.sky-precip {
+  inset: 0;
+}
+
+.sky-wash {
+  background: var(--sky);
+  opacity: 0;
+}
+
+html.is-sky-live .sky-wash {
+  transition: opacity 0.7s var(--ease);
+}
+
+html[data-sky] .sky-wash {
+  opacity: 1;
+}
+
+.sky-stars {
+  opacity: 0;
+  transition: opacity 0.7s var(--ease);
+}
+
+.sky-stars::before,
+.sky-stars::after {
+  content: "";
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  border-radius: 50%;
+  background: #fff;
+}
+
+.sky-stars::before {
+  top: 14%;
+  left: 12%;
+  box-shadow:
+    8vw 4vh 0 0 rgba(255, 255, 255, 0.8),
+    18vw 12vh 0 0 rgba(255, 255, 255, 0.55),
+    27vw 3vh 0 0.4px rgba(255, 255, 255, 0.9),
+    36vw 18vh 0 0 rgba(255, 255, 255, 0.45),
+    44vw 7vh 0 0 rgba(255, 255, 255, 0.75),
+    53vw 16vh 0 0.5px rgba(255, 255, 255, 0.85),
+    62vw 5vh 0 0 rgba(255, 255, 255, 0.5),
+    71vw 14vh 0 0 rgba(255, 255, 255, 0.7),
+    80vw 8vh 0 0.4px rgba(255, 255, 255, 0.9),
+    88vw 19vh 0 0 rgba(255, 255, 255, 0.4),
+    15vw 28vh 0 0 rgba(255, 255, 255, 0.35),
+    33vw 31vh 0 0 rgba(255, 255, 255, 0.55),
+    58vw 27vh 0 0 rgba(255, 255, 255, 0.4),
+    76vw 30vh 0 0 rgba(255, 255, 255, 0.6);
+}
+
+.sky-stars::after {
+  top: 22%;
+  left: 22%;
+  width: 1px;
+  height: 1px;
+  box-shadow:
+    6vw 6vh 0 0 rgba(255, 255, 255, 0.7),
+    14vw 16vh 0 0.5px rgba(255, 255, 255, 0.8),
+    24vw 9vh 0 0 rgba(255, 255, 255, 0.45),
+    39vw 4vh 0 0 rgba(255, 255, 255, 0.65),
+    49vw 18vh 0 0 rgba(255, 255, 255, 0.4),
+    67vw 11vh 0 0.4px rgba(255, 255, 255, 0.85),
+    84vw 6vh 0 0 rgba(255, 255, 255, 0.5),
+    11vw 24vh 0 0 rgba(255, 255, 255, 0.35);
+}
+
+html[data-sky="night"] .sky-stars {
+  opacity: 0.8;
+}
+
+html[data-sky="night"][data-weather="cloud"] .sky-stars {
+  opacity: 0.32;
+}
+
+html[data-sky="night"][data-weather="fog"] .sky-stars,
+html[data-sky="night"][data-weather="rain"] .sky-stars,
+html[data-sky="night"][data-weather="snow"] .sky-stars,
+html[data-sky="night"][data-weather="storm"] .sky-stars {
+  opacity: 0;
+}
+
+.sky-orb {
+  left: var(--orb-x, 70%);
+  top: var(--orb-y, 26%);
+  width: 11rem;
+  height: 11rem;
+  border-radius: 50%;
+  opacity: 0;
+  transform: translate(-50%, -50%);
+  transition: opacity 0.7s var(--ease), left 0.7s var(--ease), top 0.7s var(--ease);
+}
+
+.sky-sun {
+  background: radial-gradient(circle, rgba(255, 250, 236, 0.96) 0%, rgba(255, 232, 186, 0.55) 18%, rgba(255, 214, 150, 0.16) 42%, rgba(255, 214, 150, 0) 70%);
+}
+
+.sky-moon {
+  width: 5.4rem;
+  height: 5.4rem;
+  background: radial-gradient(circle at 35% 35%, rgba(255, 252, 245, 0.98) 0%, rgba(230, 235, 244, 0.9) 26%, rgba(214, 220, 232, 0.28) 52%, rgba(214, 220, 232, 0) 72%);
+  box-shadow: 0 0 42px rgba(226, 232, 245, 0.28);
+}
+
+html[data-sky="day"] .sky-sun {
+  opacity: var(--orb-opacity);
+}
+
+html[data-sky="night"] .sky-moon {
+  opacity: var(--orb-opacity);
 }
 
 .clouds {
   position: absolute;
   inset: -6%;
   background: url("/images/clouds.webp") center / 100% 100% no-repeat;
-  opacity: 0.55;
+  opacity: var(--cloud-opacity);
   animation: atmosphere-drift 90s ease-in-out infinite alternate;
+  transition: opacity 0.7s var(--ease);
+}
+
+.clouds-back {
+  inset: -10%;
+  opacity: var(--cloud-back);
+  animation-duration: 140s;
+  animation-direction: alternate-reverse;
+}
+
+.sky-fog {
+  background: linear-gradient(180deg, rgba(226, 230, 236, 0.08), rgba(214, 220, 228, 0.55));
+  opacity: 0;
+  transition: opacity 0.7s var(--ease);
+}
+
+html[data-weather="fog"] .sky-fog {
+  opacity: 1;
+}
+
+html[data-sky="night"][data-weather="fog"] .sky-fog {
+  background: linear-gradient(180deg, rgba(18, 26, 42, 0.2), rgba(8, 12, 22, 0.62));
+}
+
+.sky-precip {
+  inset: -30% 0;
+  opacity: 0;
+  transition: opacity 0.7s var(--ease);
+}
+
+html[data-weather="rain"] .sky-precip,
+html[data-weather="storm"] .sky-precip {
+  opacity: 0.5;
+  background-image: repeating-linear-gradient(
+    104deg,
+    transparent 0,
+    transparent 8px,
+    rgba(255, 255, 255, 0.42) 8px,
+    rgba(255, 255, 255, 0.42) 9px
+  );
+  animation: precip-fall 0.95s linear infinite;
+}
+
+html[data-weather="storm"] .sky-precip {
+  opacity: 0.68;
+}
+
+html[data-weather="snow"] .sky-precip {
+  opacity: 0.85;
+  background-image:
+    radial-gradient(circle, rgba(255, 255, 255, 0.92) 0 1.2px, transparent 1.7px),
+    radial-gradient(circle, rgba(255, 255, 255, 0.75) 0 1.7px, transparent 2.2px),
+    radial-gradient(circle, rgba(255, 255, 255, 0.85) 0 1px, transparent 1.5px);
+  background-size: 140px 180px, 190px 220px, 120px 160px;
+  background-position: 0 0, 40px 30px, 18px 12px;
+  animation: snow-fall 11s linear infinite;
+}
+
+html[data-weather="rain"] .sky-wash,
+html[data-weather="storm"] .sky-wash {
+  filter: saturate(0.86) brightness(0.92);
+}
+
+html[data-weather="fog"] .sky-wash {
+  filter: saturate(0.75) brightness(1.03);
+}
+
+html[data-weather="snow"] .sky-wash {
+  filter: saturate(0.82) brightness(1.05);
 }
 
 .grain {
   z-index: 0;
   background: url("/images/grain.webp") repeat;
-  opacity: 0.1;
+  opacity: 0.13;
   mix-blend-mode: soft-light;
 }
 
 @keyframes atmosphere-drift {
   from { transform: translate3d(-1%, 0.6%, 0) scale(1.04); }
   to { transform: translate3d(1.2%, -0.8%, 0) scale(1.06); }
+}
+
+@keyframes precip-fall {
+  from { transform: translate3d(0, -10%, 0); }
+  to { transform: translate3d(0, 10%, 0); }
+}
+
+@keyframes snow-fall {
+  from { background-position: 0 0, 40px 30px, 18px 12px; }
+  to { background-position: 0 180px, 40px 250px, 18px 172px; }
+}
+
+html.is-paused .clouds,
+html.is-paused .sky-precip {
+  animation-play-state: paused;
 }
 
 .skip {
@@ -91,10 +354,16 @@ body {
   background: #fff;
   color: var(--ink);
   transform: translateY(-160%);
+  transition: transform var(--move) var(--ease), background-color var(--move) var(--ease), color var(--move) var(--ease);
 }
 
 .skip:focus {
   transform: none;
+}
+
+html[data-sky="night"] .skip {
+  background: #141b28;
+  color: #f4f6fb;
 }
 
 .page {
@@ -109,27 +378,231 @@ body {
   text-align: center;
 }
 
+h1,
+h2,
+h3,
+.go,
+.about a {
+  color: var(--ink);
+}
+
 h1 {
   margin: 0;
   font-family: var(--serif);
   font-weight: 400;
-  font-size: clamp(4.2rem, 11vw, 6.4rem);
-  line-height: 0.9;
+  font-size: clamp(2.75rem, 8.6vw, 5.5rem);
+  line-height: 0.95;
+  transition: color 0.7s var(--ease);
 }
 
 .handle {
-  margin: 0.85rem 0 0;
+  margin: 0.7rem 0 0;
   color: var(--muted);
   font-size: 1.08rem;
   font-weight: 500;
+  transition: color 0.7s var(--ease);
+}
+
+.copy {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  margin: 0;
+  padding: 0.15rem 0.2rem;
+  border: 0;
+  border-radius: 8px;
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  transition: transform var(--move) var(--ease), color var(--move) var(--ease);
+}
+
+.copy-label {
+  user-select: text;
+}
+
+.copy:hover,
+.copy-address:hover {
+  transform: translateY(-3px);
+}
+
+.copy:active,
+.copy-address:active {
+  transform: translateY(1px) scale(0.98);
+}
+
+.copy-aside {
+  display: grid;
+  grid-template-columns: 0fr;
+  opacity: 0;
+  transition: grid-template-columns var(--move) var(--ease), opacity var(--move) var(--ease);
+}
+
+.copy:hover .copy-aside,
+.copy:focus-visible .copy-aside,
+.copy.is-copied .copy-aside {
+  grid-template-columns: 1fr;
+  opacity: 1;
+}
+
+.copy-aside-clip {
+  overflow: hidden;
+  min-width: 0;
+}
+
+.copy-aside-inner {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  width: max-content;
+  padding-left: 0.45rem;
+}
+
+.copy-icons {
+  position: relative;
+  width: 1rem;
+  height: 1rem;
+  flex: none;
+}
+
+.copy-icons svg {
+  position: absolute;
+  inset: 0;
+  width: 1rem;
+  height: 1rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: opacity var(--move) var(--ease);
+}
+
+.icon-check {
+  opacity: 0;
+}
+
+.copy.is-copied .icon-copy,
+.copy-address.is-copied .icon-copy {
+  opacity: 0;
+}
+
+.copy.is-copied .icon-check,
+.copy-address.is-copied .icon-check {
+  opacity: 1;
+}
+
+.copy-status {
+  color: var(--muted);
+  font-size: 0.86rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.copy-status:empty {
+  display: none;
+}
+
+.copy-fallback {
+  position: fixed;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  pointer-events: none;
 }
 
 .intro {
-  margin: 0.55rem 0 0;
+  margin: 0.45rem 0 0;
   font-family: var(--font);
   font-size: 1.05rem;
   font-weight: 500;
-  color: rgba(28, 36, 48, 0.66);
+  color: var(--soft);
+  transition: color 0.7s var(--ease);
+}
+
+.contact {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.15rem;
+  margin-top: 1.45rem;
+}
+
+.copy-address {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.75rem;
+  min-height: 2.75rem;
+  margin: 0;
+  padding: 0 0.35rem;
+  border: 0;
+  border-radius: 8px;
+  background: none;
+  color: var(--ink);
+  font: inherit;
+  cursor: pointer;
+  transition: transform var(--move) var(--ease), color var(--move) var(--ease);
+}
+
+.copy-address.is-copied .copy-aside {
+  grid-template-columns: 1fr;
+  opacity: 1;
+}
+
+.mail-note {
+  display: grid;
+  grid-template-rows: 0fr;
+  margin: 0;
+  opacity: 0;
+  color: var(--muted);
+  transition: grid-template-rows var(--move) var(--ease), opacity var(--move) var(--ease), margin-top var(--move) var(--ease);
+}
+
+.mail-note.is-open {
+  grid-template-rows: 1fr;
+  margin-top: 0.85rem;
+  opacity: 1;
+}
+
+.mail-note-clip {
+  overflow: hidden;
+  min-height: 0;
+}
+
+.mail-note-inner {
+  display: grid;
+  gap: 0.15rem;
+  justify-items: center;
+}
+
+.mail-message:empty,
+.mail-address:empty {
+  display: none;
+}
+
+.mail-address {
+  color: var(--ink);
+  font-weight: 600;
+  user-select: text;
+}
+
+.email,
+.more {
+  transition: transform var(--move) var(--ease), opacity var(--move) var(--ease), background-color var(--move) var(--ease), color var(--move) var(--ease), border-color var(--move) var(--ease), box-shadow var(--move) var(--ease);
+}
+
+.email:hover,
+.more:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 16px 36px rgba(36, 54, 78, 0.14);
+}
+
+.email:active,
+.more:active {
+  transform: translateY(1px) scale(0.98);
 }
 
 .email {
@@ -137,7 +610,7 @@ h1 {
   align-items: center;
   justify-content: center;
   min-height: 2.75rem;
-  margin-top: 1.45rem;
+  margin-top: 0;
   padding: 0.45rem 1.15rem;
   border-radius: 999px;
   background: var(--ink);
@@ -150,6 +623,20 @@ h1 {
   background: #2a3444;
 }
 
+html[data-sky="night"] .email {
+  background: #f3f5f8;
+  color: #141b28;
+}
+
+html[data-sky="night"] .email:hover,
+html[data-sky="night"] .more:hover {
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.28);
+}
+
+html[data-sky="night"] .email:hover {
+  background: #fff;
+}
+
 .work {
   margin-top: 4.75rem;
 }
@@ -160,17 +647,20 @@ h2 {
   font-weight: 400;
   font-size: clamp(1.9rem, 4vw, 2.5rem);
   line-height: 1.1;
-  color: var(--ink);
+  transition: color 0.7s var(--ease);
 }
 
 .list {
   display: flex;
   flex-direction: column;
   gap: 0.85rem;
+  min-width: 0;
 }
 
 .card {
   display: block;
+  min-width: 0;
+  max-width: 100%;
   overflow: hidden;
   border-radius: 22px;
   background: var(--card);
@@ -180,15 +670,31 @@ h2 {
   -webkit-backdrop-filter: blur(18px) saturate(1.15);
   color: inherit;
   text-decoration: none;
+  transition: transform var(--move) var(--ease), box-shadow var(--move) var(--ease), background-color var(--move) var(--ease), border-color var(--move) var(--ease), color var(--move) var(--ease);
 }
 
 a.card:hover {
   background: rgba(255, 255, 255, 0.55);
-  transform: translateY(-2px);
+  box-shadow: 0 18px 40px rgba(36, 54, 78, 0.14);
+  transform: translateY(-3px);
+}
+
+a.card:active {
+  transform: translateY(1px) scale(0.98);
+}
+
+.is-static {
+  cursor: default;
+}
+
+html[data-sky="night"] a.card:hover {
+  background: rgba(16, 22, 38, 0.62);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.34);
 }
 
 .card img {
   display: block;
+  max-width: 100%;
   width: 100%;
   height: auto;
   aspect-ratio: 16 / 9;
@@ -205,9 +711,9 @@ a.card:hover {
   align-items: center;
   gap: 0.4rem;
   margin-top: 0.75rem;
-  color: var(--ink);
   font-weight: 600;
   font-size: 0.92rem;
+  transition: color var(--move) var(--ease);
 }
 
 .globe {
@@ -221,8 +727,34 @@ a.card:hover {
   stroke-linejoin: round;
 }
 
-html.js .extra:not(.is-open) {
-  display: none;
+.extra-wrap {
+  margin-top: 0.85rem;
+}
+
+.extra-clip {
+  min-height: 0;
+}
+
+html.js .extra-wrap {
+  display: grid;
+  grid-template-rows: 0fr;
+  margin-top: 0;
+  opacity: 0;
+  transition: grid-template-rows var(--move) var(--ease), opacity var(--move) var(--ease), margin-top var(--move) var(--ease);
+}
+
+html.js .extra-wrap.is-open {
+  grid-template-rows: 1fr;
+  margin-top: 0.85rem;
+  opacity: 1;
+}
+
+html.js .extra-clip {
+  overflow: hidden;
+}
+
+html.js .extra-wrap.is-open.is-settled .extra-clip {
+  overflow: visible;
 }
 
 .more-row {
@@ -250,23 +782,46 @@ html.js .extra:not(.is-open) {
   background: rgba(255, 255, 255, 0.68);
 }
 
+html[data-sky="night"] .more {
+  border-color: rgba(255, 255, 255, 0.2);
+  background: rgba(12, 18, 32, 0.42);
+  color: #f4f6fb;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.22);
+}
+
+html[data-sky="night"] .more:hover {
+  background: rgba(12, 18, 32, 0.62);
+}
+
 .about {
   margin-top: 4.25rem;
 }
 
+.about p,
+.card p,
+.fallback {
+  color: var(--muted);
+  transition: color 0.7s var(--ease);
+}
+
 .about p {
   margin: 0;
-  color: var(--muted);
 }
 
 .about a {
-  color: var(--ink);
   font-weight: 600;
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-underline-offset: 0.16em;
+  transition: color var(--move) var(--ease), text-decoration-color var(--move) var(--ease);
+}
+
+.about a:hover {
+  text-decoration-color: currentColor;
 }
 
 .fallback {
   margin: 0.85rem 0 0;
-  color: var(--muted);
   font-size: 0.95rem;
 }
 
@@ -279,13 +834,48 @@ h3 {
   font-size: 1.28rem;
   font-weight: 600;
   line-height: 1.25;
+  transition: color 0.7s var(--ease);
 }
 
 .card p {
   margin: 0.4rem 0 0;
-  color: var(--muted);
 }
 
+html.js [data-rise] {
+  opacity: 0;
+  transform: translateY(16px);
+}
+
+html.js [data-rise].is-in {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity var(--move) var(--ease),
+    transform var(--move) var(--ease),
+    color 0.7s var(--ease),
+    background-color var(--move) var(--ease),
+    border-color var(--move) var(--ease),
+    box-shadow var(--move) var(--ease);
+}
+
+html.js [data-rise].is-in.d1 { transition-delay: 70ms; }
+html.js [data-rise].is-in.d2 { transition-delay: 140ms; }
+html.js [data-rise].is-in.d3 { transition-delay: 210ms; }
+html.js [data-rise].is-in.d4 { transition-delay: 280ms; }
+html.js [data-rise].is-in.d5 { transition-delay: 350ms; }
+html.js [data-rise].is-in.d6 { transition-delay: 420ms; }
+html.js [data-rise].is-in.d7 { transition-delay: 490ms; }
+html.js [data-rise].is-in.d8 { transition-delay: 560ms; }
+
+html.js a.card[data-rise].is-in:hover,
+html.js .extra-wrap.is-open a.card:hover {
+  transform: translateY(-3px);
+}
+
+html.js a.card[data-rise].is-in:active,
+html.js .extra-wrap.is-open a.card:active {
+  transform: translateY(1px) scale(0.98);
+}
 
 .missing {
   min-height: 100vh;
@@ -306,6 +896,7 @@ h3 {
 }
 
 a:focus-visible,
+button:focus-visible,
 .skip:focus {
   outline: 2px solid var(--ink);
   outline-offset: 3px;
@@ -323,6 +914,40 @@ a:focus-visible,
   border: 0;
 }
 
+@media (hover: none) {
+  .copy:hover .copy-aside {
+    grid-template-columns: 0fr;
+    opacity: 0;
+  }
+
+  .copy:focus-visible .copy-aside,
+  .copy.is-copied .copy-aside,
+  .copy-address.is-copied .copy-aside {
+    grid-template-columns: 1fr;
+    opacity: 1;
+  }
+
+  html.js a.card[data-rise].is-in:hover,
+  html.js .extra-wrap.is-open a.card:hover,
+  a.card:hover,
+  .email:hover,
+  .more:hover,
+  .copy:hover,
+  .copy-address:hover {
+    transform: none;
+  }
+
+  html.js a.card[data-rise].is-in:active,
+  html.js .extra-wrap.is-open a.card:active,
+  a.card:active,
+  .email:active,
+  .more:active,
+  .copy:active,
+  .copy-address:active {
+    transform: translateY(1px) scale(0.98);
+  }
+}
+
 @media (max-width: 640px) {
   .page {
     width: min(var(--page), calc(100% - 1.5rem));
@@ -334,23 +959,36 @@ a:focus-visible,
     margin-top: 3.25rem;
   }
 
-  h1 {
-    font-size: clamp(3.6rem, 18vw, 4.6rem);
-  }
-
   .card-body {
     padding: 0.95rem 1rem 1.05rem;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .atmosphere,
-  a.card {
-    animation: none;
-    transition: none;
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 
-  a.card:hover {
+  html.js [data-rise] {
+    opacity: 1;
+    transform: none;
+  }
+
+  a.card:hover,
+  .email:hover,
+  .more:hover,
+  .copy:hover,
+  .copy-address:hover,
+  .copy:active,
+  .copy-address:active,
+  a.card:active,
+  .email:active,
+  .more:active {
     transform: none;
   }
 }
