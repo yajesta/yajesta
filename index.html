@@ -67,68 +67,221 @@
           <span class="copy-announcement sr-only" role="status" aria-atomic="true"></span>
         </p>
         <p class="intro" data-rise>I design and build websites and interfaces.</p>
-        <div class="contact" data-rise>
-          <a class="email" data-contact>Email me</a>
-          <button type="button" class="copy-address" aria-label="Copy email address">
-            <span class="copy-icons" aria-hidden="true">
-              <svg class="icon-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2"></rect><path d="M15 9V6.5A1.5 1.5 0 0 0 13.5 5h-8A1.5 1.5 0 0 0 4 6.5v8A1.5 1.5 0 0 0 5.5 16H8"></path></svg>
-              <svg class="icon-check" viewBox="0 0 24 24"><path d="M5 12.5 9.2 16.7 19 7"></path></svg>
-            </span>
-            <span class="copy-aside">
-              <span class="copy-aside-clip">
-                <span class="copy-aside-inner">
-                  <span class="copy-status" aria-hidden="true"></span>
+        <p class="availability" data-rise>Taking on new projects.</p>
+        <div class="contact-block" data-rise>
+          <div class="contact">
+            <a class="email" data-contact>Email me</a>
+            <button type="button" class="copy-address" aria-label="Copy email address">
+              <span class="copy-icons" aria-hidden="true">
+                <svg class="icon-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2"></rect><path d="M15 9V6.5A1.5 1.5 0 0 0 13.5 5h-8A1.5 1.5 0 0 0 4 6.5v8A1.5 1.5 0 0 0 5.5 16H8"></path></svg>
+                <svg class="icon-check" viewBox="0 0 24 24"><path d="M5 12.5 9.2 16.7 19 7"></path></svg>
+              </span>
+              <span class="copy-aside">
+                <span class="copy-aside-clip">
+                  <span class="copy-aside-inner">
+                    <span class="copy-status" aria-hidden="true"></span>
+                  </span>
                 </span>
               </span>
+            </button>
+            <span class="mail-announcement sr-only" role="status" aria-atomic="true"></span>
+          </div>
+          <p class="mail-note">
+            <span class="mail-note-clip">
+              <span class="mail-note-inner">
+                <span class="mail-message"></span>
+                <span class="mail-address"></span>
+              </span>
             </span>
-          </button>
-          <span class="mail-announcement sr-only" role="status" aria-atomic="true"></span>
+          </p>
         </div>
-        <p class="mail-note">
-          <span class="mail-note-clip">
-            <span class="mail-note-inner">
-              <span class="mail-message"></span>
-              <span class="mail-address"></span>
-            </span>
-          </span>
-        </p>
         <noscript><p class="fallback">Write to me at oscarkalid dot com.</p></noscript>
       </header>
       <section class="work" aria-labelledby="made-heading">
         <h2 id="made-heading" data-rise>Things I've made</h2>
         <div class="list">
-          <a class="card" data-rise href="https://northantseventsolutions.co.uk" target="_blank" rel="noopener noreferrer">
+          <article class="card" data-rise>
             <img src="/images/northants-event-solutions.webp" width="1280" height="720" alt="Homepage of the Northants Event Solutions website, with a festival crowd and the headline for event production and equipment hire." fetchpriority="high" decoding="async">
             <div class="card-body">
-              <h3>Northants Event Solutions</h3>
+              <h3 id="northants-title">Northants Event Solutions</h3>
               <p>A website for a local events business, built and launched for a client, covering hire, installations, and event support.</p>
-              <span class="go"><svg class="globe" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.6 2.8 3.9 6.1 3.9 9s-1.3 6.2-3.9 9c-2.6-2.8-3.9-6.1-3.9-9s1.3-6.2 3.9-9z"/></svg>northantseventsolutions.co.uk<span class="sr-only"> (opens in a new tab)</span></span>
+              <a class="go" href="https://northantseventsolutions.co.uk" target="_blank" rel="noopener noreferrer"><svg class="globe" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.6 2.8 3.9 6.1 3.9 9s-1.3 6.2-3.9 9c-2.6-2.8-3.9-6.1-3.9-9s1.3-6.2 3.9-9z"/></svg>northantseventsolutions.co.uk<span class="sr-only"> (opens in a new tab)</span></a>
+              <button type="button" class="text-act story-cue" aria-expanded="false" aria-controls="story-northants">Read the story</button>
             </div>
-          </a>
-          <article class="card is-static" data-rise>
+            <div class="story" id="story-northants" role="region" aria-labelledby="northants-title">
+              <div class="story-clip">
+                <div class="story-inner">
+                  <p>They needed one site for equipment hire, installations, event support and touring, so people planning events around Northamptonshire could see the work in one place.</p>
+                  <p>I designed and built it, then launched it. There is a page for each of those services, a short account of the company, and a contact form.</p>
+                  <p>The site is live. These are the event support page and the touring page.</p>
+                  <figure>
+                    <img src="/images/northants-event-support.webp" width="1280" height="720" alt="Event support page on the Northants Event Solutions website, with a van being loaded outside a warehouse." loading="lazy" decoding="async">
+                    <figcaption>The event support page.</figcaption>
+                  </figure>
+                  <figure>
+                    <img src="/images/northants-touring.webp" width="1280" height="720" alt="Touring page on the Northants Event Solutions website, with a crowd in front of a stage." loading="lazy" decoding="async">
+                    <figcaption>The touring page.</figcaption>
+                  </figure>
+                </div>
+              </div>
+            </div>
+          </article>
+          <article class="card" data-rise>
             <img src="/images/nene-valley-bathrooms-and-kitchens.webp" width="1280" height="720" alt="Homepage of the Nene Valley Bathrooms and Kitchens website, with a modern fitted bathroom and the headline for affordable luxury bathrooms and kitchens." loading="lazy" decoding="async">
             <div class="card-body">
-              <h3>Nene Valley Bathrooms and Kitchens</h3>
+              <h3 id="nene-title">Nene Valley Bathrooms and Kitchens</h3>
               <p>A multi-page site for a bathroom, kitchen and renovation company, with service pages, finance information, and an enquiry form.</p>
+              <button type="button" class="text-act story-cue" aria-expanded="false" aria-controls="story-nene">Read the story</button>
+            </div>
+            <div class="story" id="story-nene" role="region" aria-labelledby="nene-title">
+              <div class="story-clip">
+                <div class="story-inner">
+                  <p>They needed pages for bathrooms, kitchens and the wider renovation work, plus finance, and a way to enquire or book a visit to the Rushden showroom.</p>
+                  <p>I have been designing that site: service pages, a finance page and an enquiry form. It is not published, so this card has no link.</p>
+                  <p>The picture above is the homepage as it stands, with the showroom work and a consultation booking.</p>
+                </div>
+              </div>
+            </div>
+          </article>
+          <article class="card" data-rise>
+            <div class="card-body">
+              <h3 id="ui-title">UI kit</h3>
+              <p>@oscarkalid/ui is a set of React components and the design tokens they are built on. Install the package, or copy a component in and change it.</p>
+              <a class="go" href="https://ui.oscarkalid.com" target="_blank" rel="noopener noreferrer"><svg class="globe" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.6 2.8 3.9 6.1 3.9 9s-1.3 6.2-3.9 9c-2.6-2.8-3.9-6.1-3.9-9s1.3-6.2 3.9-9z"/></svg>ui.oscarkalid.com<span class="sr-only"> (opens in a new tab)</span></a>
+              <button type="button" class="text-act story-cue" aria-expanded="false" aria-controls="story-ui">Read the story</button>
+            </div>
+            <div class="story" id="story-ui" role="region" aria-labelledby="ui-title">
+              <div class="story-clip">
+                <div class="story-inner">
+                  <p>I wanted interface pieces I could reuse, with the colours and type kept in tokens instead of copied from one project to the next.</p>
+                  <p>The kit is React components, one file each. You can install the package, or take a file and change it. The notes for it are on ui.oscarkalid.com, covering buttons, fields, tables, dialogs and the smaller parts around them.</p>
+                  <p>This is the button preview from those notes.</p>
+                  <figure>
+                    <img src="/images/ui-kit-buttons.webp" width="1280" height="156" alt="Save and Cancel buttons in the @oscarkalid/ui notes." loading="lazy" decoding="async">
+                    <figcaption>Save and Cancel in the UI kit notes.</figcaption>
+                  </figure>
+                </div>
+              </div>
             </div>
           </article>
         </div>
-        <div class="extra-wrap" id="more-work">
-          <div class="extra-clip">
-            <a class="card" href="https://ui.oscarkalid.com" target="_blank" rel="noopener noreferrer">
-              <div class="card-body">
-                <h3>UI kit</h3>
-                <p>@oscarkalid/ui is a set of React components and the design tokens they are built on. Install the package, or copy a component in and change it.</p>
-                <span class="go"><svg class="globe" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.6 2.8 3.9 6.1 3.9 9s-1.3 6.2-3.9 9c-2.6-2.8-3.9-6.1-3.9-9s1.3-6.2 3.9-9z"/></svg>ui.oscarkalid.com<span class="sr-only"> (opens in a new tab)</span></span>
-              </div>
-            </a>
-          </div>
-        </div>
-        <p class="more-row" data-rise><button type="button" class="more" hidden aria-expanded="false" aria-controls="more-work">Show more</button></p>
       </section>
-      <section class="about" data-rise aria-labelledby="about-heading">
+      <section class="block prose" data-rise aria-labelledby="offer-heading">
+        <h2 id="offer-heading">What I can do for you</h2>
+        <p>I make new websites for local businesses, and I redesign ones that no longer match the work. I can also look after hosting, and the updates that come up once a site is live.</p>
+        <p>If you need customers to get in touch, I add an enquiry form that sends the message to you by email.</p>
+      </section>
+      <section class="block" data-rise aria-labelledby="work-heading">
+        <h2 id="work-heading">How I work</h2>
+        <ol class="steps">
+          <li>
+            <h3>First chat</h3>
+            <p>We talk about the business, who the site is for, and what it needs to do.</p>
+          </li>
+          <li>
+            <h3>Design</h3>
+            <p>I design the pages so you can see the type, the colour and how it moves before the rest is filled in.</p>
+          </li>
+          <li>
+            <h3>Build</h3>
+            <p>I build the site with you, and check it on a phone and on a larger screen.</p>
+          </li>
+          <li>
+            <h3>Launch and aftercare</h3>
+            <p>I put it online, then stay for hosting and the changes that come later.</p>
+          </li>
+        </ol>
+      </section>
+      <section class="block" aria-labelledby="craft-heading">
+        <h2 id="craft-heading" data-rise>Craft</h2>
+        <div class="craft-list">
+          <article class="card" data-rise>
+            <div class="card-body craft-copy">
+              <h3>Copy</h3>
+              <p>The same control as the handle at the top. It copies the line, or selects it if the clipboard is blocked.</p>
+              <p class="handle">
+                <button type="button" class="copy" aria-label="Copy the line">
+                  <span class="copy-label">I design and build websites and interfaces.</span>
+                  <span class="copy-aside">
+                    <span class="copy-aside-clip">
+                      <span class="copy-aside-inner">
+                        <span class="copy-icons" aria-hidden="true">
+                          <svg class="icon-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2"></rect><path d="M15 9V6.5A1.5 1.5 0 0 0 13.5 5h-8A1.5 1.5 0 0 0 4 6.5v8A1.5 1.5 0 0 0 5.5 16H8"></path></svg>
+                          <svg class="icon-check" viewBox="0 0 24 24"><path d="M5 12.5 9.2 16.7 19 7"></path></svg>
+                        </span>
+                        <span class="copy-status" aria-hidden="true"></span>
+                      </span>
+                    </span>
+                  </span>
+                </button>
+                <span class="copy-announcement sr-only" role="status" aria-atomic="true"></span>
+              </p>
+            </div>
+          </article>
+          <article class="card" data-rise>
+            <div class="card-body">
+              <h3>Time of day</h3>
+              <p>Move through the day. The sky behind the page follows the slider.</p>
+              <p class="time-readout" id="sky-readout">12:00</p>
+              <input id="sky-hour" class="sky-range" type="range" min="0" max="23.75" step="0.25" value="12" aria-label="Time of day">
+              <button type="button" class="text-act" id="sky-now">Back to now</button>
+            </div>
+          </article>
+          <article class="card" data-rise>
+            <div class="card-body">
+              <h3>Button</h3>
+              <p>A button from the UI kit. Save confirms in place, and Cancel clears it.</p>
+              <div class="kit-plate">
+                <button type="button" class="kit-save" aria-pressed="false">
+                  <span class="kit-faces">
+                    <span>Save</span>
+                    <span>Saved</span>
+                  </span>
+                </button>
+                <button type="button" class="kit-cancel">Cancel</button>
+              </div>
+              <p class="kit-status sr-only" role="status" aria-atomic="true"></p>
+            </div>
+          </article>
+        </div>
+      </section>
+      <section class="about block" data-rise aria-labelledby="about-heading">
         <h2 id="about-heading">About me</h2>
-        <p>I design and build websites for local businesses, from first idea to launch. I'm based in Northamptonshire and open to new work, so if you've got a project in mind, <a data-contact>get in touch</a>.</p>
+        <p>I'm based in Northamptonshire. I build websites for local businesses through Northants Web Solutions, from the first conversation through to launch.</p>
+        <p>I also design and build my own UI kit. It is the components and tokens I use when an interface needs to be made carefully and used again.</p>
+        <p>I like motion that belongs to one system: the same ease and the same length of time, so nothing on the page jumps.</p>
+      </section>
+      <section class="ending block" data-rise aria-labelledby="ending-heading">
+        <h2 id="ending-heading">Get in touch</h2>
+        <p>If you email, say what the business does, whether you want a new site or a redesign, and which pages you have in mind. If there is a current site, send the link.</p>
+        <div class="contact-block">
+          <div class="contact">
+            <a class="email" data-contact>Email me</a>
+            <button type="button" class="copy-address" aria-label="Copy email address">
+              <span class="copy-icons" aria-hidden="true">
+                <svg class="icon-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2"></rect><path d="M15 9V6.5A1.5 1.5 0 0 0 13.5 5h-8A1.5 1.5 0 0 0 4 6.5v8A1.5 1.5 0 0 0 5.5 16H8"></path></svg>
+                <svg class="icon-check" viewBox="0 0 24 24"><path d="M5 12.5 9.2 16.7 19 7"></path></svg>
+              </span>
+              <span class="copy-aside">
+                <span class="copy-aside-clip">
+                  <span class="copy-aside-inner">
+                    <span class="copy-status" aria-hidden="true"></span>
+                  </span>
+                </span>
+              </span>
+            </button>
+            <span class="mail-announcement sr-only" role="status" aria-atomic="true"></span>
+          </div>
+          <p class="mail-note">
+            <span class="mail-note-clip">
+              <span class="mail-note-inner">
+                <span class="mail-message"></span>
+                <span class="mail-address"></span>
+              </span>
+            </span>
+          </p>
+        </div>
+        <noscript><p class="fallback">Write to me at oscarkalid dot com.</p></noscript>
       </section>
     </main>
   </body>

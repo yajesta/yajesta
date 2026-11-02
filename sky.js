@@ -12,6 +12,7 @@
   var place = { latitude: 52.24, longitude: 0, timezone: "UTC", known: true };
   var timer = 0;
   var snapToken = 0;
+  var previewHour = null;
 
   try {
     place.timezone = Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC";
@@ -193,7 +194,7 @@
         second: now.getUTCSeconds()
       };
     }
-    var decimal = clock.hour + clock.minute / 60;
+    var decimal = previewHour != null ? previewHour : clock.hour + clock.minute / 60;
     if (!finite(decimal)) decimal = 12;
     var sky = daylight(decimal, clock);
     var colors = skyColors(decimal, sky.day);
@@ -213,6 +214,7 @@
     root.style.setProperty("--orb-x", orb.x);
     root.style.setProperty("--orb-y", orb.y);
     root.dataset.sky = nextMode;
+    root.dataset.skyHour = String(Math.round(decimal * 100) / 100);
     if (snap) {
       var token = snapToken;
       void root.offsetWidth;
@@ -348,6 +350,16 @@
       paint();
       startClock();
     }
+  });
+
+  document.addEventListener("oscarkalid-sky", function (event) {
+    var detail = event && event.detail ? event.detail : {};
+    if (detail.hour == null || detail.hour === "") previewHour = null;
+    else {
+      var next = +detail.hour;
+      previewHour = finite(next) ? clamp(next, 0, 23.75) : null;
+    }
+    paint();
   });
 
   paint();
