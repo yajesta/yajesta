@@ -894,6 +894,7 @@ html.js .extra-wrap.is-open a.card:active {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 1.75rem;
   padding-top: 0;
   padding-bottom: 0;
   text-align: center;
