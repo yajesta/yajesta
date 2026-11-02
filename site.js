@@ -213,56 +213,61 @@
       });
     }
 
-    var note = document.querySelector(".mail-note");
-    var noteMessage = document.querySelector(".mail-message");
-    var noteAddress = document.querySelector(".mail-address");
-    var mailLive = document.querySelector(".mail-announcement");
-
-    function revealAddress(message) {
-      if (noteMessage) noteMessage.textContent = message || "";
-      if (noteAddress) noteAddress.textContent = addressText();
-      if (note) note.classList.add("is-open");
-      if (mailLive) mailLive.textContent = message ? message + " " + addressText() : addressText();
-      window.requestAnimationFrame(function () {
-        selectNode(noteAddress);
-      });
-    }
-
     bindCopy(document.querySelector(".copy"), "@oscarkalid", document.querySelector(".copy-announcement"), function () {
       selectNode(document.querySelector(".copy-label"));
       var live = document.querySelector(".copy-announcement");
       if (live) live.textContent = "Selected";
     });
 
-    bindCopy(document.querySelector(".copy-address"), addressText(), mailLive, function () {
-      revealAddress("Address selected.");
-    });
+    var contacts = document.querySelectorAll(".contact");
+    for (var b = 0; b < contacts.length; b++) {
+      (function (contact) {
+        var note = contact.nextElementSibling;
+        if (!note || !note.classList.contains("mail-note")) note = null;
+        var noteMessage = note ? note.querySelector(".mail-message") : null;
+        var noteAddress = note ? note.querySelector(".mail-address") : null;
+        var mailLive = contact.querySelector(".mail-announcement");
 
-    var mail = document.querySelector("a.email");
-    if (mail) {
-      mail.addEventListener("click", function () {
-        var started = Date.now();
-        var sawHidden = false;
-        var poll = 0;
-        function stop() {
-          window.clearInterval(poll);
+        function revealAddress(message) {
+          if (noteMessage) noteMessage.textContent = message || "";
+          if (noteAddress) noteAddress.textContent = addressText();
+          if (note) note.classList.add("is-open");
+          if (mailLive) mailLive.textContent = message ? message + " " + addressText() : addressText();
+          window.requestAnimationFrame(function () {
+            selectNode(noteAddress);
+          });
         }
-        poll = window.setInterval(function () {
-          var elapsed = Date.now() - started;
-          if (document.hidden) {
-            sawHidden = true;
-            if (elapsed > 12000) stop();
-            return;
+
+        bindCopy(contact.querySelector(".copy-address"), addressText(), mailLive, function () {
+          revealAddress("Address selected.");
+        });
+
+        var mail = contact.querySelector("a.email");
+        if (!mail) return;
+        mail.addEventListener("click", function () {
+          var started = Date.now();
+          var sawHidden = false;
+          var poll = 0;
+          function stop() {
+            window.clearInterval(poll);
           }
-          if (sawHidden) {
+          poll = window.setInterval(function () {
+            var elapsed = Date.now() - started;
+            if (document.hidden) {
+              sawHidden = true;
+              if (elapsed > 12000) stop();
+              return;
+            }
+            if (sawHidden) {
+              stop();
+              return;
+            }
+            if (elapsed < 900) return;
             stop();
-            return;
-          }
-          if (elapsed < 900) return;
-          stop();
-          revealAddress("No mail app opened.");
-        }, 150);
-      });
+            revealAddress("No mail app opened.");
+          }, 150);
+        });
+      })(contacts[b]);
     }
   });
 })();
