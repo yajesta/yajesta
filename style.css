@@ -1013,3 +1013,22 @@ button:focus-visible,
   justify-items: start;
   text-align: left;
 }
+
+a.email,
+a.email:link,
+a.email:visited,
+a.email:hover,
+a.email:active {
+  color: #fff;
+  -webkit-text-fill-color: #fff;
+  text-decoration: none;
+}
+
+html[data-sky="night"] a.email,
+html[data-sky="night"] a.email:link,
+html[data-sky="night"] a.email:visited,
+html[data-sky="night"] a.email:hover,
+html[data-sky="night"] a.email:active {
+  color: #141b28;
+  -webkit-text-fill-color: #141b28;
+}
