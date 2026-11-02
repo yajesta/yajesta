@@ -400,7 +400,7 @@ h1,
 h2,
 h3,
 .go,
-.about a {
+.about p a {
   color: var(--ink);
 }
 
@@ -807,7 +807,7 @@ html[data-sky="night"] .more:hover {
 }
 
 .about {
-  margin-top: 4.25rem;
+  margin-top: 4.75rem;
 }
 
 .about p,
@@ -820,15 +820,16 @@ html[data-sky="night"] .more:hover {
   margin: 0;
 }
 
-.about a {
+.about p a {
   font-weight: 600;
+  white-space: nowrap;
   text-decoration: underline;
   text-decoration-color: transparent;
   text-underline-offset: 0.16em;
   transition: text-decoration-color var(--move) var(--ease);
 }
 
-.about a:hover {
+.about p a:hover {
   text-decoration-color: currentColor;
 }
 
@@ -965,7 +966,8 @@ button:focus-visible,
     padding-bottom: calc(3.5rem + env(safe-area-inset-bottom));
   }
 
-  .work {
+  .work,
+  .about {
     margin-top: 3.25rem;
   }
 
