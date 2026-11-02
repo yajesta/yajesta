@@ -1003,26 +1003,11 @@ button:focus-visible,
   }
 }
 
-.ending {
-  margin-top: 4.25rem;
-}
-
-.ending > p {
-  margin: 0;
-  color: var(--muted);
-}
-
-.ending .contact {
+.about .contact {
   justify-content: flex-start;
 }
 
-.ending .mail-note-inner {
+.about .mail-note-inner {
   justify-items: start;
   text-align: left;
-}
-
-@media (max-width: 640px) {
-  .ending {
-    margin-top: 3.25rem;
-  }
 }
