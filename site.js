@@ -20,7 +20,7 @@
       (function (node, wait) {
         var delayClass = "";
         if (stagger && wait && !reducedMotion()) {
-          delayClass = "d" + Math.min(8, Math.round(wait / 70));
+          delayClass = "d" + Math.min(8, Math.round(wait / 80));
           node.classList.add(delayClass);
         }
         node.classList.add("is-in");
@@ -34,7 +34,7 @@
           if (delayClass) node.classList.remove(delayClass);
         }, wait + 900);
       })(nodes[i], delay);
-      delay += stagger ? 70 : 0;
+      delay += stagger ? 80 : 0;
     }
   }
 
@@ -166,58 +166,6 @@
         if (missed.length) markIn(missed, false);
       }, 1600);
     }
-
-    var more = document.querySelector(".more");
-    var wrap = document.querySelector(".extra-wrap");
-    if (more && wrap) {
-      wrap.setAttribute("inert", "");
-      more.hidden = false;
-      var settleTimer = 0;
-      more.addEventListener("click", function () {
-        var open = !wrap.classList.contains("is-open");
-        window.clearTimeout(settleTimer);
-        if (open) {
-          wrap.removeAttribute("inert");
-          wrap.classList.add("is-open");
-          more.setAttribute("aria-expanded", "true");
-          more.textContent = "Show less";
-          function focusCard() {
-            var card = wrap.querySelector(".card");
-            if (card && wrap.classList.contains("is-open")) card.focus();
-          }
-          function settle(event) {
-            if (event && event.target !== wrap) return;
-            if (event && event.propertyName !== "grid-template-rows" && event.propertyName !== "opacity") return;
-            wrap.classList.add("is-settled");
-            wrap.removeEventListener("transitionend", settle);
-            focusCard();
-          }
-          if (reducedMotion()) settle();
-          else {
-            wrap.addEventListener("transitionend", settle);
-            settleTimer = window.setTimeout(function () {
-              if (!wrap.classList.contains("is-settled")) {
-                wrap.classList.add("is-settled");
-                focusCard();
-              }
-            }, 700);
-          }
-          return;
-        }
-        if (document.activeElement && wrap.contains(document.activeElement)) more.focus();
-        wrap.classList.remove("is-settled");
-        wrap.classList.remove("is-open");
-        wrap.setAttribute("inert", "");
-        more.setAttribute("aria-expanded", "false");
-        more.textContent = "Show more";
-      });
-    }
-
-    bindCopy(document.querySelector(".copy"), "@oscarkalid", document.querySelector(".copy-announcement"), function () {
-      selectNode(document.querySelector(".copy-label"));
-      var live = document.querySelector(".copy-announcement");
-      if (live) live.textContent = "Selected";
-    });
 
     var contacts = document.querySelectorAll(".contact");
     for (var b = 0; b < contacts.length; b++) {
