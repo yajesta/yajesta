@@ -130,7 +130,7 @@
   }
 
   function enterPanel(panel) {
-    var units = panel.querySelectorAll(".item, .about-block");
+    var units = panel.querySelectorAll(".item, .about-unit");
     if (!units.length) units = panel.querySelectorAll(":scope > *");
     var reduce = reducedMotion();
     var rise = panel.querySelectorAll("[data-rise]");
