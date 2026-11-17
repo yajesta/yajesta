@@ -407,7 +407,8 @@ a:focus-visible {
 }
 
 @media (min-width: 720px) {
-  .work .shot {
+  .work .shot,
+  .post .shot {
     width: calc(100% + 2 * min(3.5rem, max(0px, (100vw - 100% - 2.5rem) / 2)));
     max-width: none;
     margin-inline: calc(min(3.5rem, max(0px, (100vw - 100% - 2.5rem) / 2)) * -1);
