@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>Oscar Kalid</title>
+    <meta name="description" content="What to track after you ship, when to alert, and how to decide whether to revert or fix.">
+    <meta name="robots" content="index, follow">
+    <meta name="color-scheme" content="light only">
+    <meta name="theme-color" content="#ffffff">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self'; connect-src 'self' https://oscarkalid-roblox-stats.doskioscar.workers.dev; base-uri 'self'; form-action 'none'; object-src 'none'">
+    <link rel="canonical" href="https://oscarkalid.com/posts/watch-the-data-after-every-update">
+    <meta property="og:title" content="Oscar Kalid">
+    <meta property="og:description" content="What to track after you ship, when to alert, and how to decide whether to revert or fix.">
+    <meta property="og:url" content="https://oscarkalid.com/posts/watch-the-data-after-every-update">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="en_GB">
+    <meta property="og:image" content="https://oscarkalid.com/images/share.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Oscar Kalid">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Oscar Kalid">
+    <meta name="twitter:description" content="What to track after you ship, when to alert, and how to decide whether to revert or fix.">
+    <meta name="twitter:image" content="https://oscarkalid.com/images/share.png">
+    <meta name="twitter:image:alt" content="Oscar Kalid">
+    <link rel="icon" href="/images/favicon.svg" type="image/svg+xml">
+    <link rel="icon" href="/images/favicon-32.png" type="image/png" sizes="32x32">
+    <link rel="apple-touch-icon" href="/images/apple-touch-icon.png" sizes="180x180">
+    <link rel="stylesheet" href="/style.css?v=24">
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Oscar Kalid","url":"https://oscarkalid.com/","email":"me@oscarkalid.com","jobTitle":"Web designer and developer"}</script>
+    <script src="/site.js?v=14"></script>
+  </head>
+  <body>
+    <a class="skip" href="#content">Skip to content</a>
+    <main class="page" id="content">
+      <header class="hero">
+        <h1 data-rise><a class="home-link" href="/">Oscar Kalid</a></h1>
+        <p class="affiliation" data-rise>Working at <a class="title-link" href="https://yajesta.com" target="_blank" rel="noopener noreferrer">Yajesta<span class="sr-only"> (opens in a new tab)</span></a></p>
+      </header>
+
+      <nav class="tabs" aria-label="Sections" data-rise>
+        <a href="/">Work<span class="tab-underline" aria-hidden="true"></span></a>
+        <a href="/games">Games<span class="tab-underline" aria-hidden="true"></span></a>
+        <a href="/tools">Tools<span class="tab-underline" aria-hidden="true"></span></a>
+        <a href="/posts" aria-current="page">Posts<span class="tab-underline" aria-hidden="true"></span></a>
+        <a href="/about">About<span class="tab-underline" aria-hidden="true"></span></a>
+      </nav>
+
+      <div id="panel">
+        <article class="post">
+          <header class="post-head about-unit">
+            <h1>Watch the data after every update</h1>
+            <p class="stats">17 Nov 2026</p>
+          </header>
+          <p class="about-unit">When you ship an update, the question is not whether it went out. The question is whether the game got better, or worse, in the days after.</p>
+          <p class="about-unit">I watch four things: the funnel, retention, session length, and revenue. Visits and peak players are easy to look at, and they can hide a problem. A game can stay busy at the top while more people drop out of a single step, or stay for less time, or spend less.</p>
+          <h2 class="about-unit">What each number tells you</h2>
+          <p class="about-unit">The funnel is the path people actually take: they join, they get through the early minutes, they reach the next thing you wanted them to reach, and so on. If one step starts losing people, the rest of the game never gets a chance. After an update, check each step against the days before you shipped, not against the best week the game ever had.</p>
+          <p class="about-unit">Retention tells you whether people come back the next day and later on. An update that looks exciting on day one can still thin out the people who return. Session length tells you whether a visit has got shorter or longer. Revenue tells you whether the game is still making what it did. None of these replace the others. A longer session with worse retention is a different problem from a short session and a drop in revenue.</p>
+          <h2 class="about-unit">Alert on a sharp drop</h2>
+          <p class="about-unit">Give a normal change a little time to settle. A few hours of noise is not a verdict. But do not wait a week to notice a hole. Set alerts for a sharp drop so you are told when something moves a lot, not only when you happen to open the numbers.</p>
+          <p class="about-unit">A useful example: if one step in the funnel starts losing about 30 percent more people than it did before the update, that should fire an alert. A small wobble should not. You are trying to catch a break in the path, not react to every dip.</p>
+          <h2 class="about-unit">Revert or fix</h2>
+          <p class="about-unit">When an alert fires, look at what you actually changed. That decision — revert or fix — depends on the change, not on the size of the graph. If you reworked a core loop and the drop sits on that step, and you cannot see a quick, clear fix, put the previous version back and study it. If you know the exact cause and can correct it without leaving the hole open, fix it and ship again. A typo in a prompt and a rewrite of the early game are not the same kind of risk.</p>
+          <p class="about-unit">Write down what went out with each update. A short list is enough: the date, the changes, and anything you turned on or off. When a graph moves, you need to match it to a change. Memory is not good at this, especially if you ship often.</p>
+          <p class="about-unit">Watch the same four numbers the next day, and again a few days later. Some problems show up late. Some recover on their own. The alert gets you there quickly. The follow-up tells you whether the revert or the fix actually held.</p>
+        </article>
+      </div>
+    </main>
+  </body>
+</html>
