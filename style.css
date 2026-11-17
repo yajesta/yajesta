@@ -112,6 +112,31 @@ a:focus-visible {
   align-items: flex-start;
 }
 
+.home-link {
+  display: inline-block;
+  font-weight: 500;
+  color: inherit;
+  text-decoration: none;
+}
+
+.home-link:hover {
+  text-decoration: underline dotted;
+  text-decoration-style: dotted;
+  text-decoration-color: var(--line);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.22em;
+}
+
+#panel {
+  transition: opacity 0.24s cubic-bezier(0.4, 0, 1, 1), filter 0.24s cubic-bezier(0.4, 0, 1, 1);
+}
+
+#panel.is-leaving,
+#panel.is-entering {
+  opacity: 0;
+  filter: blur(6px);
+}
+
 .tabs {
   display: flex;
   flex-wrap: nowrap;
@@ -152,12 +177,6 @@ a:focus-visible {
   bottom: 0;
   height: 2px;
   background: var(--line);
-}
-
-#work,
-#roblox,
-#about {
-  scroll-margin-top: 1.5rem;
 }
 
 .work {
@@ -307,5 +326,9 @@ html.js [data-rise].is-in.d8 { transition-delay: 640ms; }
   html.js [data-rise] {
     opacity: 1;
     transform: none;
+  }
+
+  #panel {
+    transition: none;
   }
 }
