@@ -6,10 +6,6 @@
     return parts[0] + String.fromCharCode(64) + parts[1];
   }
 
-  function contactHref() {
-    return "mailto:" + addressText();
-  }
-
   function reducedMotion() {
     return window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   }
@@ -38,184 +34,235 @@
     }
   }
 
-  function fallbackCopy(text) {
-    var area = document.createElement("textarea");
-    var selected = document.activeElement;
-    area.value = text;
-    area.setAttribute("readonly", "");
-    area.className = "copy-fallback";
-    document.body.appendChild(area);
-    area.focus();
-    area.select();
-    var copied = false;
-    try {
-      copied = document.execCommand("copy");
-    } catch (error) {
-      copied = false;
-    }
-    document.body.removeChild(area);
-    if (selected && selected.focus) selected.focus();
-    return copied;
+  function bindEmail(root) {
+    var href = "mailto:" + addressText();
+    var links = (root || document).querySelectorAll("[data-contact]");
+    for (var i = 0; i < links.length; i++) links[i].setAttribute("href", href);
   }
 
-  function selectNode(node) {
-    if (!node || !window.getSelection) return;
-    var selection = window.getSelection();
-    if (!selection) return;
-    var range = document.createRange();
-    range.selectNodeContents(node);
-    selection.removeAllRanges();
-    selection.addRange(range);
-  }
-
-  function copyText(token, onSuccess, onFail) {
-    var settled = false;
-    function finish(ok) {
-      if (settled) return;
-      settled = true;
-      if (ok) onSuccess();
-      else onFail();
+  function bindRise(root) {
+    var rise = (root || document).querySelectorAll("[data-rise]");
+    if (!rise.length) return;
+    if (reducedMotion() || !("IntersectionObserver" in window)) {
+      markIn(rise, false);
+      return;
     }
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      var pending = navigator.clipboard.writeText(token);
-      if (pending && pending.then) {
-        pending.then(function () {
-          finish(true);
-        }, function () {
-          finish(fallbackCopy(token));
-        });
-        window.setTimeout(function () {
-          if (settled) return;
-          finish(fallbackCopy(token));
-        }, 350);
-        return;
+    var pending = [];
+    var flushTimer = 0;
+    var observer = new IntersectionObserver(function (entries) {
+      for (var n = 0; n < entries.length; n++) {
+        if (!entries[n].isIntersecting) continue;
+        pending.push(entries[n].target);
+        observer.unobserve(entries[n].target);
       }
-    }
-    finish(fallbackCopy(token));
+      window.clearTimeout(flushTimer);
+      flushTimer = window.setTimeout(function () {
+        var batch = pending;
+        pending = [];
+        var ordered = [];
+        for (var r = 0; r < rise.length; r++) {
+          if (batch.indexOf(rise[r]) !== -1) ordered.push(rise[r]);
+        }
+        markIn(ordered, true);
+      }, 32);
+    }, { threshold: 0.14, rootMargin: "0px 0px -6% 0px" });
+    for (var j = 0; j < rise.length; j++) observer.observe(rise[j]);
+    window.setTimeout(function () {
+      var missed = [];
+      for (var k = 0; k < rise.length; k++) {
+        if (rise[k].classList.contains("is-in")) continue;
+        var rect = rise[k].getBoundingClientRect();
+        if (rect.bottom > 0 && rect.top < window.innerHeight * 0.94) missed.push(rise[k]);
+      }
+      if (missed.length) markIn(missed, false);
+    }, 1600);
   }
 
-  function bindCopy(button, token, announcement, onFail) {
-    if (!button) return;
-    var status = button.querySelector(".copy-status");
-    var resetTimer = 0;
-    var clearTimer = 0;
+  function pagePath(pathname) {
+    var path = (pathname || "/").replace(/\/+$/, "");
+    if (path === "" || path === "/index.html") return "/";
+    if (path === "/roblox.html") return "/roblox";
+    if (path === "/about.html") return "/about";
+    return path || "/";
+  }
 
-    function setStatus(text) {
-      if (status) status.textContent = text;
-      if (announcement) announcement.textContent = text;
+  function isTabPath(path) {
+    return path === "/" || path === "/roblox" || path === "/about";
+  }
+
+  function setActiveTab(path) {
+    var nav = document.querySelector(".tabs");
+    if (!nav) return;
+    var links = nav.querySelectorAll("a[href]");
+    var reduce = reducedMotion();
+    for (var i = 0; i < links.length; i++) {
+      (function (link) {
+        var on = pagePath(link.getAttribute("href")) === path;
+        var was = link.hasAttribute("aria-current");
+        var bar = link.querySelector(".tab-underline");
+        if (on && !was) {
+          if (bar && !reduce) {
+            bar.classList.remove("is-exiting", "is-on");
+            bar.classList.add("is-entering");
+          }
+          link.setAttribute("aria-current", "page");
+          if (bar && !reduce) {
+            bar.offsetWidth;
+            window.requestAnimationFrame(function () {
+              bar.classList.remove("is-entering");
+              bar.classList.add("is-on");
+            });
+          }
+        } else if (!on && was) {
+          if (bar && !reduce) {
+            bar.classList.remove("is-on", "is-entering");
+            bar.classList.add("is-exiting");
+            link.removeAttribute("aria-current");
+            window.setTimeout(function () {
+              bar.classList.remove("is-exiting");
+            }, 240);
+          } else {
+            link.removeAttribute("aria-current");
+          }
+        }
+      })(links[i]);
     }
+  }
 
-    function showCopied() {
-      button.classList.add("is-copied");
-      setStatus("Copied");
-      window.clearTimeout(resetTimer);
-      window.clearTimeout(clearTimer);
-      resetTimer = window.setTimeout(function () {
-        button.classList.remove("is-copied");
-        clearTimer = window.setTimeout(function () {
-          if (!button.classList.contains("is-copied")) setStatus("");
-        }, reducedMotion() ? 0 : 460);
-      }, 1500);
+  function enterPanel(panel) {
+    var units = panel.querySelectorAll(".item, .about-block");
+    if (!units.length) units = panel.querySelectorAll(":scope > *");
+    var reduce = reducedMotion();
+    var rise = panel.querySelectorAll("[data-rise]");
+    for (var r = 0; r < rise.length; r++) rise[r].classList.add("is-in");
+    if (reduce) {
+      panel.classList.remove("is-entering", "is-leaving");
+      panel.classList.add("is-shown");
+      return;
     }
-
-    button.addEventListener("click", function () {
-      copyText(token, showCopied, function () {
-        button.classList.remove("is-copied");
-        setStatus("");
-        onFail();
+    panel.classList.remove("is-leaving");
+    panel.classList.add("is-entering");
+    for (var i = 0; i < units.length; i++) {
+      units[i].classList.remove("is-enter-to");
+      units[i].classList.add("is-enter-from");
+      units[i].style.transitionDelay = "";
+    }
+    panel.offsetWidth;
+    window.requestAnimationFrame(function () {
+      window.requestAnimationFrame(function () {
+        panel.classList.remove("is-entering");
+        panel.classList.add("is-shown");
+        for (var i = 0; i < units.length; i++) {
+          units[i].style.transitionDelay = i * 0.06 + "s";
+          units[i].classList.remove("is-enter-from");
+          units[i].classList.add("is-enter-to");
+        }
       });
     });
   }
 
+  function enhanceTabs() {
+    if (!window.fetch || !window.DOMParser || !window.history || !history.pushState) return;
+    var cache = {};
+    var busy = false;
+    var pending = null;
+    var shown = pagePath(window.location.pathname);
+
+    function load(url) {
+      if (cache[url]) {
+        return Promise.resolve(cache[url]);
+      }
+      return fetch(url, { headers: { Accept: "text/html" } }).then(function (res) {
+        if (!res.ok) throw new Error("fetch failed");
+        return res.text();
+      }).then(function (html) {
+        var doc = new DOMParser().parseFromString(html, "text/html");
+        var next = doc.getElementById("panel");
+        if (!next) throw new Error("no panel");
+        cache[url] = { panel: next, title: doc.title };
+        return cache[url];
+      });
+    }
+
+    function swap(url, push) {
+      var dest = new URL(url, window.location.href);
+      if (dest.origin !== window.location.origin) return false;
+      var path = pagePath(dest.pathname);
+      if (!isTabPath(path)) return false;
+      var clean = path === "/" ? "/" : path;
+      if (path === shown) {
+        if (push && dest.href !== window.location.href) history.pushState({ path: path }, "", clean);
+        pending = null;
+        return true;
+      }
+      if (busy) {
+        pending = { url: dest.href, push: push };
+        return true;
+      }
+      busy = true;
+      var panel = document.getElementById("panel");
+      if (!panel) {
+        busy = false;
+        return false;
+      }
+
+      setActiveTab(path);
+      if (push) history.pushState({ path: path }, "", clean);
+      var leaving = reducedMotion() ? Promise.resolve() : new Promise(function (resolve) {
+        panel.classList.remove("is-shown", "is-entering");
+        panel.classList.add("is-leaving");
+        window.setTimeout(resolve, 240);
+      });
+      Promise.all([load(clean), leaving]).then(function (results) {
+        if (pending) {
+          var next = pending;
+          pending = null;
+          busy = false;
+          swap(next.url, next.push);
+          return;
+        }
+        var page = results[0];
+        var incoming = page.panel.cloneNode(true);
+        if (!reducedMotion()) incoming.classList.add("is-entering");
+        panel.replaceWith(incoming);
+        panel = incoming;
+        document.title = page.title || "Oscar Kalid";
+        bindEmail(panel);
+        window.scrollTo(0, 0);
+        enterPanel(panel);
+        shown = path;
+        busy = false;
+        if (pending) {
+          var queued = pending;
+          pending = null;
+          swap(queued.url, queued.push);
+        }
+      }).catch(function () {
+        busy = false;
+        pending = null;
+        window.location.href = clean;
+      });
+      return true;
+    }
+
+    document.addEventListener("click", function (event) {
+      if (event.defaultPrevented || event.button !== 0) return;
+      if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+      var link = event.target && event.target.closest ? event.target.closest("a[href]") : null;
+      if (!link || link.target === "_blank" || link.hasAttribute("download")) return;
+      var href = link.getAttribute("href");
+      if (!href || href.charAt(0) === "#" || href.indexOf("mailto:") === 0) return;
+      if (swap(link.href, true)) event.preventDefault();
+    });
+
+    window.addEventListener("popstate", function () {
+      swap(window.location.href, false);
+    });
+  }
+
   document.addEventListener("DOMContentLoaded", function () {
-    var href = contactHref();
-    var links = document.querySelectorAll("[data-contact]");
-    for (var i = 0; i < links.length; i++) links[i].setAttribute("href", href);
-
-    var rise = document.querySelectorAll("[data-rise]");
-    if (reducedMotion() || !("IntersectionObserver" in window)) {
-      markIn(rise, false);
-    } else {
-      var pending = [];
-      var flushTimer = 0;
-      var observer = new IntersectionObserver(function (entries) {
-        for (var n = 0; n < entries.length; n++) {
-          if (!entries[n].isIntersecting) continue;
-          pending.push(entries[n].target);
-          observer.unobserve(entries[n].target);
-        }
-        window.clearTimeout(flushTimer);
-        flushTimer = window.setTimeout(function () {
-          var batch = pending;
-          pending = [];
-          var ordered = [];
-          for (var r = 0; r < rise.length; r++) {
-            if (batch.indexOf(rise[r]) !== -1) ordered.push(rise[r]);
-          }
-          markIn(ordered, true);
-        }, 32);
-      }, { threshold: 0.14, rootMargin: "0px 0px -6% 0px" });
-      for (var j = 0; j < rise.length; j++) observer.observe(rise[j]);
-      window.setTimeout(function () {
-        var missed = [];
-        for (var k = 0; k < rise.length; k++) {
-          if (rise[k].classList.contains("is-in")) continue;
-          var rect = rise[k].getBoundingClientRect();
-          if (rect.bottom > 0 && rect.top < window.innerHeight * 0.94) missed.push(rise[k]);
-        }
-        if (missed.length) markIn(missed, false);
-      }, 1600);
-    }
-
-    var contacts = document.querySelectorAll(".contact");
-    for (var b = 0; b < contacts.length; b++) {
-      (function (contact) {
-        var note = contact.nextElementSibling;
-        if (!note || !note.classList.contains("mail-note")) note = null;
-        var noteMessage = note ? note.querySelector(".mail-message") : null;
-        var noteAddress = note ? note.querySelector(".mail-address") : null;
-        var mailLive = contact.querySelector(".mail-announcement");
-
-        function revealAddress(message) {
-          if (noteMessage) noteMessage.textContent = message || "";
-          if (noteAddress) noteAddress.textContent = addressText();
-          if (note) note.classList.add("is-open");
-          if (mailLive) mailLive.textContent = message ? message + " " + addressText() : addressText();
-          window.requestAnimationFrame(function () {
-            selectNode(noteAddress);
-          });
-        }
-
-        bindCopy(contact.querySelector(".copy-address"), addressText(), mailLive, function () {
-          revealAddress("Address selected.");
-        });
-
-        var mail = contact.querySelector("a.email");
-        if (!mail) return;
-        mail.addEventListener("click", function () {
-          var started = Date.now();
-          var sawHidden = false;
-          var poll = 0;
-          function stop() {
-            window.clearInterval(poll);
-          }
-          poll = window.setInterval(function () {
-            var elapsed = Date.now() - started;
-            if (document.hidden) {
-              sawHidden = true;
-              if (elapsed > 12000) stop();
-              return;
-            }
-            if (sawHidden) {
-              stop();
-              return;
-            }
-            if (elapsed < 900) return;
-            stop();
-            revealAddress("No mail app opened.");
-          }, 150);
-        });
-      })(contacts[b]);
-    }
+    bindEmail(document);
+    bindRise(document);
+    enhanceTabs();
   });
 })();
