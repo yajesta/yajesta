@@ -94,11 +94,71 @@
     var nav = document.querySelector(".tabs");
     if (!nav) return;
     var links = nav.querySelectorAll("a[href]");
+    var reduce = reducedMotion();
     for (var i = 0; i < links.length; i++) {
-      var href = links[i].getAttribute("href");
-      if (pagePath(href) === path) links[i].setAttribute("aria-current", "page");
-      else links[i].removeAttribute("aria-current");
+      (function (link) {
+        var on = pagePath(link.getAttribute("href")) === path;
+        var was = link.hasAttribute("aria-current");
+        var bar = link.querySelector(".tab-underline");
+        if (on && !was) {
+          if (bar && !reduce) {
+            bar.classList.remove("is-exiting", "is-on");
+            bar.classList.add("is-entering");
+          }
+          link.setAttribute("aria-current", "page");
+          if (bar && !reduce) {
+            bar.offsetWidth;
+            window.requestAnimationFrame(function () {
+              bar.classList.remove("is-entering");
+              bar.classList.add("is-on");
+            });
+          }
+        } else if (!on && was) {
+          if (bar && !reduce) {
+            bar.classList.remove("is-on", "is-entering");
+            bar.classList.add("is-exiting");
+            link.removeAttribute("aria-current");
+            window.setTimeout(function () {
+              bar.classList.remove("is-exiting");
+            }, 240);
+          } else {
+            link.removeAttribute("aria-current");
+          }
+        }
+      })(links[i]);
     }
+  }
+
+  function enterPanel(panel) {
+    var units = panel.querySelectorAll(".item, .about-block");
+    if (!units.length) units = panel.querySelectorAll(":scope > *");
+    var reduce = reducedMotion();
+    var rise = panel.querySelectorAll("[data-rise]");
+    for (var r = 0; r < rise.length; r++) rise[r].classList.add("is-in");
+    if (reduce) {
+      panel.classList.remove("is-entering", "is-leaving");
+      panel.classList.add("is-shown");
+      return;
+    }
+    panel.classList.remove("is-leaving");
+    panel.classList.add("is-entering");
+    for (var i = 0; i < units.length; i++) {
+      units[i].classList.remove("is-enter-to");
+      units[i].classList.add("is-enter-from");
+      units[i].style.transitionDelay = "";
+    }
+    panel.offsetWidth;
+    window.requestAnimationFrame(function () {
+      window.requestAnimationFrame(function () {
+        panel.classList.remove("is-entering");
+        panel.classList.add("is-shown");
+        for (var i = 0; i < units.length; i++) {
+          units[i].style.transitionDelay = i * 0.06 + "s";
+          units[i].classList.remove("is-enter-from");
+          units[i].classList.add("is-enter-to");
+        }
+      });
+    });
   }
 
   function enhanceTabs() {
@@ -141,27 +201,23 @@
         return false;
       }
 
+      setActiveTab(path);
+      if (push) history.pushState({ path: path }, "", clean);
       var leaving = reducedMotion() ? Promise.resolve() : new Promise(function (resolve) {
+        panel.classList.remove("is-shown", "is-entering");
         panel.classList.add("is-leaving");
         window.setTimeout(resolve, 240);
       });
       Promise.all([load(clean), leaving]).then(function (results) {
         var page = results[0];
         var incoming = page.panel.cloneNode(true);
-        incoming.classList.add("is-entering");
+        if (!reducedMotion()) incoming.classList.add("is-entering");
         panel.replaceWith(incoming);
         panel = incoming;
         document.title = page.title || "Oscar Kalid";
-        setActiveTab(path);
         bindEmail(panel);
-        bindRise(panel);
-        if (push) history.pushState({ path: path }, "", clean);
         window.scrollTo(0, 0);
-        window.requestAnimationFrame(function () {
-          window.requestAnimationFrame(function () {
-            panel.classList.remove("is-entering");
-          });
-        });
+        enterPanel(panel);
         busy = false;
       }).catch(function () {
         busy = false;

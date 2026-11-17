@@ -127,14 +127,32 @@ a:focus-visible {
   text-underline-offset: 0.22em;
 }
 
-#panel {
+#panel.is-leaving {
+  opacity: 0;
+  filter: blur(6px);
   transition: opacity 0.24s cubic-bezier(0.4, 0, 1, 1), filter 0.24s cubic-bezier(0.4, 0, 1, 1);
 }
 
-#panel.is-leaving,
 #panel.is-entering {
   opacity: 0;
   filter: blur(6px);
+}
+
+#panel.is-shown {
+  opacity: 1;
+  filter: blur(0);
+  transition: opacity 0.7s ease, filter 0.7s ease;
+}
+
+#panel .is-enter-from {
+  opacity: 0;
+  transform: translateY(16px);
+}
+
+#panel .is-enter-to {
+  opacity: 1;
+  transform: none;
+  transition: opacity 0.7s ease, transform 1.4s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .tabs {
@@ -169,14 +187,39 @@ a:focus-visible {
   color: var(--ink);
 }
 
-.tabs a[aria-current="page"]::after {
-  content: "";
+.tab-underline {
   position: absolute;
   left: 0;
   right: 0;
   bottom: 0;
   height: 2px;
   background: var(--line);
+  pointer-events: none;
+  opacity: 0;
+  filter: blur(6px);
+  transform: translateY(12px);
+}
+
+.tabs a[aria-current="page"] .tab-underline:not(.is-entering):not(.is-exiting),
+.tab-underline.is-on {
+  opacity: 1;
+  filter: blur(0);
+  transform: none;
+  transition: opacity 0.7s ease, filter 0.7s ease, transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.tab-underline.is-entering {
+  opacity: 0;
+  filter: blur(6px);
+  transform: translateY(12px);
+  transition: none;
+}
+
+.tab-underline.is-exiting {
+  opacity: 0;
+  filter: blur(6px);
+  transform: none;
+  transition: opacity 0.24s cubic-bezier(0.4, 0, 1, 1), filter 0.24s cubic-bezier(0.4, 0, 1, 1);
 }
 
 .work {
@@ -259,8 +302,21 @@ a:focus-visible {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 0.5rem;
-  margin-top: 4.5rem;
+  gap: 3rem;
+  margin-top: 2.5rem;
+}
+
+.about-block {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1rem;
+  max-width: 36rem;
+}
+
+.about h2 {
+  color: var(--muted);
+  font-weight: 400;
 }
 
 .fallback {
@@ -309,7 +365,7 @@ html.js [data-rise].is-in.d8 { transition-delay: 640ms; }
   }
 
   .about {
-    margin-top: 3.25rem;
+    margin-top: 2rem;
   }
 }
 
@@ -328,7 +384,23 @@ html.js [data-rise].is-in.d8 { transition-delay: 640ms; }
     transform: none;
   }
 
-  #panel {
+  #panel,
+  #panel.is-leaving,
+  #panel.is-entering,
+  #panel.is-shown,
+  #panel .is-enter-from,
+  #panel .is-enter-to {
+    opacity: 1;
+    filter: none;
+    transform: none;
+    transition: none;
+  }
+
+  .tab-underline,
+  .tab-underline.is-entering,
+  .tab-underline.is-exiting {
+    filter: none;
+    transform: none;
     transition: none;
   }
 }
