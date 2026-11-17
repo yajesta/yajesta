@@ -165,6 +165,8 @@
     if (!window.fetch || !window.DOMParser || !window.history || !history.pushState) return;
     var cache = {};
     var busy = false;
+    var pending = null;
+    var shown = pagePath(window.location.pathname);
 
     function load(url) {
       if (cache[url]) {
@@ -187,13 +189,16 @@
       if (dest.origin !== window.location.origin) return false;
       var path = pagePath(dest.pathname);
       if (!isTabPath(path)) return false;
-      var current = pagePath(window.location.pathname);
       var clean = path === "/" ? "/" : path;
-      if (path === current) {
+      if (path === shown) {
         if (push && dest.href !== window.location.href) history.pushState({ path: path }, "", clean);
+        pending = null;
         return true;
       }
-      if (busy) return true;
+      if (busy) {
+        pending = { url: dest.href, push: push };
+        return true;
+      }
       busy = true;
       var panel = document.getElementById("panel");
       if (!panel) {
@@ -209,6 +214,13 @@
         window.setTimeout(resolve, 240);
       });
       Promise.all([load(clean), leaving]).then(function (results) {
+        if (pending) {
+          var next = pending;
+          pending = null;
+          busy = false;
+          swap(next.url, next.push);
+          return;
+        }
         var page = results[0];
         var incoming = page.panel.cloneNode(true);
         if (!reducedMotion()) incoming.classList.add("is-entering");
@@ -218,9 +230,16 @@
         bindEmail(panel);
         window.scrollTo(0, 0);
         enterPanel(panel);
+        shown = path;
         busy = false;
+        if (pending) {
+          var queued = pending;
+          pending = null;
+          swap(queued.url, queued.push);
+        }
       }).catch(function () {
         busy = false;
+        pending = null;
         window.location.href = clean;
       });
       return true;
