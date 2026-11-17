@@ -82,14 +82,13 @@
     var path = (pathname || "/").replace(/\/+$/, "");
     if (path === "" || path === "/index.html") return "/";
     if (path === "/games.html" || path === "/roblox" || path === "/roblox.html") return "/games";
-    if (path === "/tools.html") return "/tools";
     if (path === "/posts.html") return "/posts";
     if (path === "/about.html") return "/about";
     return path || "/";
   }
 
   function isTabPath(path) {
-    return path === "/" || path === "/games" || path === "/tools" || path === "/posts" || path === "/about";
+    return path === "/" || path === "/games" || path === "/posts" || path === "/about";
   }
 
   function setActiveTab(path) {
