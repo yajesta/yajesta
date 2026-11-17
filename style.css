@@ -435,7 +435,7 @@ a:focus-visible {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 2rem;
+  gap: 1em;
 }
 
 .about-connect {
