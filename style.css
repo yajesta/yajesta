@@ -328,6 +328,13 @@ a:focus-visible {
   gap: 2rem;
 }
 
+.about-connect {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
 .about h2 {
   color: var(--muted);
   font-weight: 400;
