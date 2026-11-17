@@ -127,6 +127,43 @@
     });
   }
 
+
+  function bindSectionTabs() {
+    var nav = document.querySelector(".tabs");
+    if (!nav) return;
+    var links = nav.querySelectorAll('a[href^="#"]');
+    if (!links.length) return;
+    var sections = [];
+    for (var i = 0; i < links.length; i++) {
+      var id = links[i].getAttribute("href").slice(1);
+      var section = document.getElementById(id);
+      if (section) sections.push({ link: links[i], section: section });
+    }
+    if (!sections.length) return;
+
+    function setCurrent(link) {
+      for (var i = 0; i < links.length; i++) {
+        if (links[i] === link) links[i].setAttribute("aria-current", "page");
+        else links[i].removeAttribute("aria-current");
+      }
+    }
+
+    function update() {
+      var chosen = sections[0].link;
+      var mark = Math.max(120, window.innerHeight * 0.3);
+      for (var i = 0; i < sections.length; i++) {
+        if (sections[i].section.getBoundingClientRect().top <= mark) {
+          chosen = sections[i].link;
+        }
+      }
+      setCurrent(chosen);
+    }
+
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("hashchange", update);
+    update();
+  }
+
   document.addEventListener("DOMContentLoaded", function () {
     var href = contactHref();
     var links = document.querySelectorAll("[data-contact]");
@@ -166,6 +203,8 @@
         if (missed.length) markIn(missed, false);
       }, 1600);
     }
+
+    bindSectionTabs();
 
     var contacts = document.querySelectorAll(".contact");
     for (var b = 0; b < contacts.length; b++) {

@@ -27,9 +27,9 @@
     <link rel="icon" href="/images/favicon.svg" type="image/svg+xml">
     <link rel="icon" href="/images/favicon-32.png" type="image/png" sizes="32x32">
     <link rel="apple-touch-icon" href="/images/apple-touch-icon.png" sizes="180x180">
-    <link rel="stylesheet" href="/style.css?v=8">
+    <link rel="stylesheet" href="/style.css?v=9">
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Oscar Kalid","url":"https://oscarkalid.com/","email":"me@oscarkalid.com","jobTitle":"Web designer and developer"}</script>
-    <script src="/site.js?v=6"></script>
+    <script src="/site.js?v=7"></script>
   </head>
   <body>
     <a class="skip" href="#content">Skip to content</a>
@@ -65,7 +65,12 @@
         <noscript><p class="fallback">Write to me at oscarkalid dot com.</p></noscript>
       </header>
 
-      <section class="work" aria-label="Work">
+      <nav class="tabs" aria-label="Sections" data-rise>
+        <a href="#work" aria-current="page">Work</a>
+        <a href="#about">About</a>
+      </nav>
+
+      <section class="work" id="work" aria-label="Work">
         <article class="item" data-rise>
           <div class="item-head">
             <h2>Northants Event Solutions</h2>
@@ -111,7 +116,7 @@
         </article>
       </section>
 
-      <section class="about" data-rise aria-labelledby="about-heading">
+      <section class="about" id="about" data-rise aria-labelledby="about-heading">
         <h2 id="about-heading">About me</h2>
         <p>I work with local businesses, from first idea to launch. That can mean a full website, like the Northants Event Solutions site, or the interface and component work behind a kit such as @oscarkalid/ui.</p>
         <p>I'm based in Northamptonshire and open to new work. If you have a project in mind, get in touch.</p>

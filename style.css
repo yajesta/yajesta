@@ -41,6 +41,7 @@ body {
   color: var(--ink);
   background: var(--bg);
   -webkit-font-smoothing: antialiased;
+  text-decoration-style: dotted;
 }
 
 a {
@@ -84,6 +85,7 @@ p {
   border-radius: 6px;
   background: var(--bg);
   color: var(--ink);
+  text-decoration: none;
   transform: translateY(-160%);
   transition: transform var(--move) var(--ease);
 }
@@ -287,11 +289,59 @@ button:focus-visible {
   color: var(--muted);
 }
 
+
+.tabs {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 1.5rem;
+  width: 100%;
+  margin-top: 2.5rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.tabs a {
+  position: relative;
+  flex: none;
+  padding-bottom: 0.3rem;
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.tabs a:hover {
+  color: var(--soft);
+  text-decoration: none;
+}
+
+.tabs a[aria-current="page"] {
+  color: var(--ink);
+}
+
+.tabs a[aria-current="page"]::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  background: var(--line);
+}
+
+#work,
+#about {
+  scroll-margin-top: 1.5rem;
+}
+
 .work {
   display: flex;
   flex-direction: column;
   gap: 4rem;
-  margin-top: 4.5rem;
+  margin-top: 2.5rem;
 }
 
 .item {
@@ -353,10 +403,11 @@ button:focus-visible {
   align-items: center;
   gap: 0.4rem;
   font-weight: 500;
-  text-decoration: underline;
-  text-decoration-color: #e4e4e7;
+  text-decoration: underline dotted;
+  text-decoration-style: dotted;
+  text-decoration-color: var(--line);
   text-decoration-thickness: 2px;
-  text-underline-offset: 0.18em;
+  text-underline-offset: 0.22em;
   transition: text-decoration-color 0.15s ease;
 }
 
@@ -394,17 +445,34 @@ button:focus-visible {
 }
 
 .home-link:hover {
-  text-decoration: underline;
-  text-decoration-color: #e4e4e7;
+  text-decoration: underline dotted;
+  text-decoration-style: dotted;
+  text-decoration-color: var(--line);
   text-decoration-thickness: 2px;
-  text-underline-offset: 0.18em;
+  text-underline-offset: 0.22em;
 }
 
 .games {
   display: flex;
   flex-direction: column;
   gap: 4rem;
-  margin-top: 3.25rem;
+  margin-top: 2.5rem;
+}
+
+
+.game-link {
+  color: inherit;
+  font-weight: 500;
+  text-decoration: underline dotted;
+  text-decoration-style: dotted;
+  text-decoration-color: var(--line);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.22em;
+  transition: text-decoration-color 0.15s ease;
+}
+
+.game-link:hover {
+  text-decoration-color: currentColor;
 }
 
 .game-head {
@@ -473,8 +541,11 @@ html.js [data-rise].is-in.d8 { transition-delay: 640ms; }
   }
 
   .work,
-  .about,
   .games {
+    margin-top: 2rem;
+  }
+
+  .about {
     margin-top: 3.25rem;
   }
 
