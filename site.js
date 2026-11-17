@@ -81,13 +81,15 @@
   function pagePath(pathname) {
     var path = (pathname || "/").replace(/\/+$/, "");
     if (path === "" || path === "/index.html") return "/";
-    if (path === "/roblox.html") return "/roblox";
+    if (path === "/games.html" || path === "/roblox" || path === "/roblox.html") return "/games";
+    if (path === "/tools.html") return "/tools";
+    if (path === "/posts.html") return "/posts";
     if (path === "/about.html") return "/about";
     return path || "/";
   }
 
   function isTabPath(path) {
-    return path === "/" || path === "/roblox" || path === "/about";
+    return path === "/" || path === "/games" || path === "/tools" || path === "/posts" || path === "/about";
   }
 
   function setActiveTab(path) {
@@ -161,6 +163,141 @@
     });
   }
 
+
+  var STATS_URL = "https://oscarkalid-roblox-stats.doskioscar.workers.dev/";
+  var STATS_POLL = 45000;
+  var statsTimer = 0;
+
+  function formatCount(value) {
+    var n = Math.max(0, Math.floor(Number(value) || 0));
+    return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
+  function parseCount(text) {
+    return parseInt(String(text).replace(/,/g, ""), 10) || 0;
+  }
+
+  function mountOdometer(el, value, animate) {
+    var formatted = formatCount(value);
+    el.setAttribute("data-value", String(value));
+    el.setAttribute("aria-label", formatted);
+    if (reducedMotion()) {
+      el.classList.remove("odometer");
+      el.textContent = formatted;
+      return;
+    }
+    el.classList.add("odometer");
+    el.textContent = "";
+    for (var i = 0; i < formatted.length; i++) {
+      var ch = formatted.charAt(i);
+      if (ch === ",") {
+        var comma = document.createElement("span");
+        comma.className = "odometer-comma";
+        comma.textContent = ",";
+        comma.setAttribute("aria-hidden", "true");
+        el.appendChild(comma);
+        continue;
+      }
+      var digit = document.createElement("span");
+      digit.className = "odometer-digit";
+      digit.setAttribute("aria-hidden", "true");
+      var reel = document.createElement("span");
+      reel.className = "odometer-reel";
+      for (var d = 0; d <= 9; d++) {
+        var n = document.createElement("span");
+        n.textContent = String(d);
+        reel.appendChild(n);
+      }
+      var from = animate ? 0 : parseInt(ch, 10);
+      reel.style.transition = animate ? "" : "none";
+      reel.style.transform = "translateY(-" + from + "em)";
+      digit.appendChild(reel);
+      el.appendChild(digit);
+      if (animate) {
+        (function (reelEl, to) {
+          reelEl.offsetWidth;
+          window.requestAnimationFrame(function () {
+            reelEl.style.transition = "";
+            reelEl.style.transform = "translateY(-" + to + "em)";
+          });
+        })(reel, parseInt(ch, 10));
+      }
+    }
+  }
+
+  function updateOdometer(el, value) {
+    var current = parseCount(el.getAttribute("data-value") || el.textContent);
+    if (reducedMotion()) {
+      el.classList.remove("odometer");
+      el.textContent = formatCount(value);
+      el.setAttribute("data-value", String(value));
+      el.setAttribute("aria-label", formatCount(value));
+      return;
+    }
+    if (!el.classList.contains("odometer")) mountOdometer(el, current, false);
+    if (current === value) return;
+    var oldFmt = formatCount(current);
+    var newFmt = formatCount(value);
+    if (oldFmt.length !== newFmt.length) {
+      mountOdometer(el, value, true);
+      return;
+    }
+    el.setAttribute("data-value", String(value));
+    el.setAttribute("aria-label", newFmt);
+    var reels = el.querySelectorAll(".odometer-reel");
+    var ri = 0;
+    for (var i = 0; i < newFmt.length; i++) {
+      var ch = newFmt.charAt(i);
+      if (ch === ",") continue;
+      if (reels[ri]) reels[ri].style.transform = "translateY(-" + ch + "em)";
+      ri += 1;
+    }
+  }
+
+  function applyGameStats(stats) {
+    var nodes = document.querySelectorAll("[data-game]");
+    for (var i = 0; i < nodes.length; i++) {
+      var game = nodes[i].getAttribute("data-game");
+      var row = stats && stats[game];
+      if (!row) continue;
+      var visits = nodes[i].querySelector('[data-stat="visits"]');
+      var favs = nodes[i].querySelector('[data-stat="favourites"]');
+      if (visits && typeof row.visits === "number") updateOdometer(visits, row.visits);
+      if (favs && typeof row.favourites === "number") updateOdometer(favs, row.favourites);
+    }
+  }
+
+  function tickStats() {
+    if (document.visibilityState !== "visible") return;
+    if (!document.querySelector("[data-game]")) return;
+    fetch(STATS_URL, { headers: { Accept: "application/json" } })
+      .then(function (res) {
+        if (!res.ok) throw new Error("stats failed");
+        return res.json();
+      })
+      .then(applyGameStats)
+      .catch(function () {});
+  }
+
+  function stopStats() {
+    if (statsTimer) {
+      window.clearInterval(statsTimer);
+      statsTimer = 0;
+    }
+  }
+
+  function startStats() {
+    stopStats();
+    if (!document.querySelector("[data-game]")) return;
+    tickStats();
+    statsTimer = window.setInterval(tickStats, STATS_POLL);
+  }
+
+  document.addEventListener("visibilitychange", function () {
+    if (document.visibilityState === "visible") startStats();
+    else stopStats();
+  });
+
   function enhanceTabs() {
     if (!window.fetch || !window.DOMParser || !window.history || !history.pushState) return;
     var cache = {};
@@ -230,6 +367,7 @@
         bindEmail(panel);
         window.scrollTo(0, 0);
         enterPanel(panel);
+        startStats();
         shown = path;
         busy = false;
         if (pending) {
@@ -264,5 +402,6 @@
     bindEmail(document);
     bindRise(document);
     enhanceTabs();
+    startStats();
   });
 })();
