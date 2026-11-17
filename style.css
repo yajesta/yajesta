@@ -447,8 +447,8 @@ a:focus-visible {
 
 .about h1,
 .about h2 {
-  color: var(--ink);
-  font-weight: 500;
+  color: var(--muted);
+  font-weight: 400;
 }
 
 .fallback {
