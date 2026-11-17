@@ -6,10 +6,6 @@
     return parts[0] + String.fromCharCode(64) + parts[1];
   }
 
-  function contactHref() {
-    return "mailto:" + addressText();
-  }
-
   function reducedMotion() {
     return window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   }
@@ -37,96 +33,6 @@
       delay += stagger ? 80 : 0;
     }
   }
-
-  function fallbackCopy(text) {
-    var area = document.createElement("textarea");
-    var selected = document.activeElement;
-    area.value = text;
-    area.setAttribute("readonly", "");
-    area.className = "copy-fallback";
-    document.body.appendChild(area);
-    area.focus();
-    area.select();
-    var copied = false;
-    try {
-      copied = document.execCommand("copy");
-    } catch (error) {
-      copied = false;
-    }
-    document.body.removeChild(area);
-    if (selected && selected.focus) selected.focus();
-    return copied;
-  }
-
-  function selectNode(node) {
-    if (!node || !window.getSelection) return;
-    var selection = window.getSelection();
-    if (!selection) return;
-    var range = document.createRange();
-    range.selectNodeContents(node);
-    selection.removeAllRanges();
-    selection.addRange(range);
-  }
-
-  function copyText(token, onSuccess, onFail) {
-    var settled = false;
-    function finish(ok) {
-      if (settled) return;
-      settled = true;
-      if (ok) onSuccess();
-      else onFail();
-    }
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      var pending = navigator.clipboard.writeText(token);
-      if (pending && pending.then) {
-        pending.then(function () {
-          finish(true);
-        }, function () {
-          finish(fallbackCopy(token));
-        });
-        window.setTimeout(function () {
-          if (settled) return;
-          finish(fallbackCopy(token));
-        }, 350);
-        return;
-      }
-    }
-    finish(fallbackCopy(token));
-  }
-
-  function bindCopy(button, token, announcement, onFail) {
-    if (!button) return;
-    var status = button.querySelector(".copy-status");
-    var resetTimer = 0;
-    var clearTimer = 0;
-
-    function setStatus(text) {
-      if (status) status.textContent = text;
-      if (announcement) announcement.textContent = text;
-    }
-
-    function showCopied() {
-      button.classList.add("is-copied");
-      setStatus("Copied");
-      window.clearTimeout(resetTimer);
-      window.clearTimeout(clearTimer);
-      resetTimer = window.setTimeout(function () {
-        button.classList.remove("is-copied");
-        clearTimer = window.setTimeout(function () {
-          if (!button.classList.contains("is-copied")) setStatus("");
-        }, reducedMotion() ? 0 : 460);
-      }, 1500);
-    }
-
-    button.addEventListener("click", function () {
-      copyText(token, showCopied, function () {
-        button.classList.remove("is-copied");
-        setStatus("");
-        onFail();
-      });
-    });
-  }
-
 
   function bindSectionTabs() {
     var nav = document.querySelector(".tabs");
@@ -165,7 +71,7 @@
   }
 
   document.addEventListener("DOMContentLoaded", function () {
-    var href = contactHref();
+    var href = "mailto:" + addressText();
     var links = document.querySelectorAll("[data-contact]");
     for (var i = 0; i < links.length; i++) links[i].setAttribute("href", href);
 
@@ -205,56 +111,5 @@
     }
 
     bindSectionTabs();
-
-    var contacts = document.querySelectorAll(".contact");
-    for (var b = 0; b < contacts.length; b++) {
-      (function (contact) {
-        var note = contact.nextElementSibling;
-        if (!note || !note.classList.contains("mail-note")) note = null;
-        var noteMessage = note ? note.querySelector(".mail-message") : null;
-        var noteAddress = note ? note.querySelector(".mail-address") : null;
-        var mailLive = contact.querySelector(".mail-announcement");
-
-        function revealAddress(message) {
-          if (noteMessage) noteMessage.textContent = message || "";
-          if (noteAddress) noteAddress.textContent = addressText();
-          if (note) note.classList.add("is-open");
-          if (mailLive) mailLive.textContent = message ? message + " " + addressText() : addressText();
-          window.requestAnimationFrame(function () {
-            selectNode(noteAddress);
-          });
-        }
-
-        bindCopy(contact.querySelector(".copy-address"), addressText(), mailLive, function () {
-          revealAddress("Address selected.");
-        });
-
-        var mail = contact.querySelector("a.email");
-        if (!mail) return;
-        mail.addEventListener("click", function () {
-          var started = Date.now();
-          var sawHidden = false;
-          var poll = 0;
-          function stop() {
-            window.clearInterval(poll);
-          }
-          poll = window.setInterval(function () {
-            var elapsed = Date.now() - started;
-            if (document.hidden) {
-              sawHidden = true;
-              if (elapsed > 12000) stop();
-              return;
-            }
-            if (sawHidden) {
-              stop();
-              return;
-            }
-            if (elapsed < 900) return;
-            stop();
-            revealAddress("No mail app opened.");
-          }, 150);
-        });
-      })(contacts[b]);
-    }
   });
 })();

@@ -95,8 +95,7 @@ p {
 }
 
 .skip:focus-visible,
-a:focus-visible,
-button:focus-visible {
+a:focus-visible {
   outline: 2px solid var(--ink);
   outline-offset: 2px;
 }
@@ -111,184 +110,7 @@ button:focus-visible {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 0.25rem;
 }
-
-.hero .intro {
-  margin: 0;
-}
-
-.contact {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.1rem;
-  margin-top: 1.25rem;
-}
-
-.email {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 2.15rem;
-  padding: 0.3rem 0.9rem;
-  border-radius: 999px;
-  background: var(--ink);
-  color: #fff;
-  font: inherit;
-  font-weight: 500;
-  text-decoration: none;
-  transition: background-color 0.15s ease;
-}
-
-.email:link,
-.email:visited,
-.email:hover,
-.email:active {
-  color: #fff;
-  -webkit-text-fill-color: #fff;
-  text-decoration: none;
-}
-
-.email:hover {
-  background: #27272a;
-}
-
-.copy-address {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 2.15rem;
-  min-height: 2.15rem;
-  margin: 0;
-  padding: 0 0.3rem;
-  border: 0;
-  border-radius: 6px;
-  background: none;
-  color: var(--ink);
-  font: inherit;
-  cursor: pointer;
-}
-
-.copy-aside {
-  display: grid;
-  grid-template-columns: 0fr;
-  opacity: 0;
-  transition: grid-template-columns var(--move) var(--ease), opacity var(--move) var(--ease);
-}
-
-.copy-address:hover .copy-aside,
-.copy-address:focus-visible .copy-aside,
-.copy-address.is-copied .copy-aside {
-  grid-template-columns: 1fr;
-  opacity: 1;
-}
-
-.copy-aside-clip {
-  overflow: hidden;
-  min-width: 0;
-}
-
-.copy-aside-inner {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  width: max-content;
-  padding-left: 0.35rem;
-}
-
-.copy-icons {
-  position: relative;
-  width: 1rem;
-  height: 1rem;
-  flex: none;
-}
-
-.copy-icons svg {
-  position: absolute;
-  inset: 0;
-  width: 1rem;
-  height: 1rem;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 1.7;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  transition: opacity var(--move) var(--ease);
-}
-
-.icon-check {
-  opacity: 0;
-}
-
-.copy-address.is-copied .icon-copy {
-  opacity: 0;
-}
-
-.copy-address.is-copied .icon-check {
-  opacity: 1;
-}
-
-.copy-status {
-  color: var(--muted);
-  font-size: 0.86rem;
-  white-space: nowrap;
-}
-
-.copy-status:empty {
-  display: none;
-}
-
-.copy-fallback {
-  position: fixed;
-  top: 0;
-  left: 0;
-  opacity: 0;
-  pointer-events: none;
-}
-
-.mail-note {
-  display: grid;
-  grid-template-rows: 0fr;
-  margin: 0;
-  opacity: 0;
-  color: var(--muted);
-  transition: grid-template-rows var(--move) var(--ease), opacity var(--move) var(--ease), margin-top var(--move) var(--ease);
-}
-
-.mail-note.is-open {
-  grid-template-rows: 1fr;
-  margin-top: 0.7rem;
-  opacity: 1;
-}
-
-.mail-note-clip {
-  overflow: hidden;
-  min-height: 0;
-}
-
-.mail-note-inner {
-  display: grid;
-  gap: 0.15rem;
-  justify-items: start;
-}
-
-.mail-message:empty,
-.mail-address:empty {
-  display: none;
-}
-
-.mail-address {
-  color: var(--ink);
-  font-weight: 500;
-  user-select: text;
-}
-
-.fallback {
-  margin-top: 1rem;
-  color: var(--muted);
-}
-
 
 .tabs {
   display: flex;
@@ -333,6 +155,7 @@ button:focus-visible {
 }
 
 #work,
+#roblox,
 #about {
   scroll-margin-top: 1.5rem;
 }
@@ -350,10 +173,39 @@ button:focus-visible {
   gap: 0.85rem;
 }
 
-.item-head {
+.card-head {
   display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.card-icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  flex: none;
+  border-radius: 8px;
+  object-fit: cover;
+  background: var(--wash);
+}
+
+.title-link {
+  color: inherit;
+  font-weight: 500;
+  text-decoration: underline dotted;
+  text-decoration-style: dotted;
+  text-decoration-color: var(--line);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.22em;
+  transition: text-decoration-color 0.15s ease;
+}
+
+.title-link:hover {
+  text-decoration-color: currentColor;
+}
+
+.stats {
+  color: var(--muted);
+  font-size: 0.92rem;
 }
 
 .shot {
@@ -384,121 +236,17 @@ button:focus-visible {
   }
 }
 
-.copy {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-
-.copy p + p {
-  /* gap handles spacing */
-}
-
-.go-row {
-  margin-top: 0.15rem;
-}
-
-.go {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  font-weight: 500;
-  text-decoration: underline dotted;
-  text-decoration-style: dotted;
-  text-decoration-color: var(--line);
-  text-decoration-thickness: 2px;
-  text-underline-offset: 0.22em;
-  transition: text-decoration-color 0.15s ease;
-}
-
-.go:hover {
-  text-decoration-color: currentColor;
-}
-
-.globe {
-  width: 0.95rem;
-  height: 0.95rem;
-  flex: none;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 1.7;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
 .about {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  align-items: flex-start;
+  gap: 0.5rem;
   margin-top: 4.5rem;
 }
 
-.about .contact {
+.fallback {
   margin-top: 0.5rem;
-}
-
-.home-link {
-  display: inline-block;
-  font-weight: 500;
-  text-decoration: none;
-  color: inherit;
-}
-
-.home-link:hover {
-  text-decoration: underline dotted;
-  text-decoration-style: dotted;
-  text-decoration-color: var(--line);
-  text-decoration-thickness: 2px;
-  text-underline-offset: 0.22em;
-}
-
-.games {
-  display: flex;
-  flex-direction: column;
-  gap: 4rem;
-  margin-top: 2.5rem;
-}
-
-
-.game-link {
-  color: inherit;
-  font-weight: 500;
-  text-decoration: underline dotted;
-  text-decoration-style: dotted;
-  text-decoration-color: var(--line);
-  text-decoration-thickness: 2px;
-  text-underline-offset: 0.22em;
-  transition: text-decoration-color 0.15s ease;
-}
-
-.game-link:hover {
-  text-decoration-color: currentColor;
-}
-
-.game-head {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-}
-
-.game-icon {
-  width: 2.5rem;
-  height: 2.5rem;
-  flex: none;
-  border-radius: 8px;
-  object-fit: cover;
-  background: var(--wash);
-}
-
-.stats {
   color: var(--muted);
-  font-size: 0.92rem;
-}
-
-.as-of {
-  margin-top: 2.5rem;
-  color: var(--muted);
-  font-size: 0.86rem;
 }
 
 .missing {
@@ -507,10 +255,6 @@ button:focus-visible {
   align-items: flex-start;
   gap: 1.25rem;
   padding-top: 6rem;
-}
-
-.missing .email {
-  color: #fff;
 }
 
 html.js [data-rise] {
@@ -540,18 +284,13 @@ html.js [data-rise].is-in.d8 { transition-delay: 640ms; }
     padding-bottom: calc(3.5rem + env(safe-area-inset-bottom));
   }
 
-  .work,
-  .games {
+  .work {
     margin-top: 2rem;
+    gap: 3.25rem;
   }
 
   .about {
     margin-top: 3.25rem;
-  }
-
-  .work,
-  .games {
-    gap: 3.25rem;
   }
 }
 
