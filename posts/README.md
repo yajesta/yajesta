@@ -1,6 +1,6 @@
 # Adding a post
 
-1. Copy `test-post.html` to a new file in this folder, named with a short slug, for example `a-new-post.html`. GitHub Pages will serve it at `/posts/a-new-post` (no trailing slash). The preview worker does the same.
+1. Copy an existing post in this folder, such as `small-updates-beat-a-big-launch.html`, to a new file named with a short slug, for example `a-new-post.html`. GitHub Pages will serve it at `/posts/a-new-post` (no trailing slash). The preview worker does the same.
 
 2. In the new file, change the title, date, meta description, canonical URL (`https://oscarkalid.com/posts/a-new-post`) and the article body. Keep the shared header, tabs, and `#panel` wrapper so tab transitions still work.
 
@@ -24,4 +24,4 @@ For an image, use a figure with the existing `.shot` frame. A caption is optiona
 </figure>
 ```
 
-`test-post.html` is only a sample, so you can see typography and images. Delete it, and its row in `posts.html`, when it is no longer needed.
+`test-post.html` is a redirect stub for an old URL. Leave it as a redirect if you move or rename a post, so the previous address still works.
